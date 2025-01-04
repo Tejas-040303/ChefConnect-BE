@@ -1,0 +1,72 @@
+/* About Section */
+.about-section {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    /* min-height: 30vh;  */
+    /* background: linear-gradient(135deg, #6a11cb, #2575fc); */
+    background-color:#e0a353; 
+    /* opacity: 90%; */
+    /* padding: 2rem 1rem; */
+    /* margin-bottom: 0.15rem ; */
+    color: white;
+    text-align: center; /* Center text */
+    overflow: hidden;
+    position: relative;
+}
+
+
+/* Remove Rotating Background */
+.about-section::before {
+    display: none; /* Removed the animation background */
+}
+
+/* About Content */
+.about-content {
+    max-width: 800px; /* Adjusted width for better responsiveness */
+    margin: auto;
+    z-index: 1;
+}
+
+.centered {
+    text-align: center;
+}
+
+.about-title {
+    font-size: 2rem;
+    font-weight: bold;
+    margin-bottom: 1rem;
+    color: white;
+    line-height: 1.2;
+}
+
+.about-title .highlight {
+    color: #ffd700; /* Gold highlight */
+    text-shadow: 0 0 15px rgba(255, 215, 0, 0.5);
+}
+
+.about-description {
+    font-size: 1rem;
+    line-height: 1.6;
+    margin-bottom: 1.5rem; /* Added margin for better spacing */
+}
+
+/* About Button */
+.about-btn {
+    display: inline-block;
+    padding: 0.8rem 1.5rem;
+    font-size: 1rem;
+    font-weight: bold;
+    text-transform: uppercase;
+    border-radius: 25px;
+    background-color: #ff6347;
+    color: white;
+    box-shadow: 0 8px 15px rgba(255, 99, 71, 0.4);
+    text-decoration: none;
+    transition: transform 0.3s, box-shadow 0.3s;
+}
+
+.about-btn:hover {
+    transform: scale(1.1);
+    box-shadow: 0 12px 25px rgba(255, 99, 71, 0.6);
+}

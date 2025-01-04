@@ -1,0 +1,65 @@
+.carousel {
+  position: relative;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  overflow: hidden;
+  margin-top: -3.5rem;
+}
+
+.carousel-content {
+  display: flex;
+  gap: 2rem; /* Adjust gap for better spacing */
+  width: 100%;
+  justify-content: center;
+  align-items: center;
+  transition: transform 0.5s ease; /* Smooth transition */
+}
+
+.card {
+  background: #ffffff;
+  border-radius: 1rem;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  width: 200px;
+  flex: 0 0 auto; /* Ensure the cards don't shrink */
+  padding: 1rem;
+  text-align: center;
+}
+
+.card-image {
+  border-radius: 20px;
+  width: 100%;
+  height: auto;
+}
+
+.arrow {
+  position: absolute;
+  filter: drop-shadow(0px 0px 5px #555);
+  width: 2rem;
+  height: 2rem;
+  color: white;
+}
+
+.arrow:hover {
+  cursor: pointer;
+}
+
+.arrow-left {
+  left: 10px;
+}
+
+.arrow-right {
+  right: 10px;
+}
+
+
+
+@media (max-width: 1182px){
+  .arrow-left {
+      left: 10px;
+    }
+    
+    .arrow-right {
+      right: 10px;
+    }
+}

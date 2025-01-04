@@ -1,0 +1,141 @@
+
+/* Service Section */
+.service-section {
+    /* background: linear-gradient(135deg, #1e3c72, #2a5298); */
+    background:#e0a353; 
+    color: #ffffff;
+    padding: 4rem 2rem;
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+}
+
+/* Background Effects */
+.service-section::before,
+.service-section::after {
+    content: '';
+    position: absolute;
+    top: -10%;
+    left: 0;
+    width: 300px;
+    height: 300px;
+    background: radial-gradient(circle, rgba(255, 255, 255, 0.1), transparent);
+    animation: pulsate 6s infinite ease-in-out;
+    filter: blur(100px);
+}
+
+.service-section::after {
+    top: auto;
+    bottom: -10%;
+    left: auto;
+    right: 0;
+    animation-delay: 3s;
+}
+
+@keyframes pulsate {
+    0%, 100% {
+        transform: scale(1);
+    }
+    50% {
+        transform: scale(1.2);
+    }
+}
+
+/* Heading Styles */
+.service-heading {
+    font-size: 2.5rem;
+    font-weight: bold;
+    margin-bottom: 2rem;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+}
+
+/* Service Grid */
+.service-grid {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 2rem;
+    justify-content: center;
+}
+
+/* Service Card */
+.service-card {
+    background: rgba(255, 255, 255, 0.15);
+    border-radius: 15px;
+    padding: 2rem;
+    width: 250px;
+    box-shadow: 0px 10px 25px rgba(0, 0, 0, 0.2), 0px 0px 20px var(--glow-color);
+    transition: transform 0.3s, box-shadow 0.3s;
+    position: relative;
+    overflow: hidden;
+    z-index: 1;
+    margin: 2rem;
+}
+
+.service-card:hover {
+    transform: translateY(-10px);
+    box-shadow: 0px 15px 30px rgba(0, 0, 0, 0.3), 0px 0px 40px var(--glow-color);
+}
+
+.service-card::before {
+    content: '';
+    position: absolute;
+    top: -50%;
+    left: -50%;
+    width: 200%;
+    height: 200%;
+    background: radial-gradient(circle, var(--glow-color), transparent);
+    z-index: -1;
+    animation: rotateGlow 10s infinite linear;
+}
+
+@keyframes rotateGlow {
+    0% {
+        transform: rotate(0deg);
+    }
+    100% {
+        transform: rotate(360deg);
+    }
+}
+
+/* Service Icon */
+.service-icon {
+    width: 70px;
+    height: 70px;
+    margin-bottom: 1rem;
+    transition: transform 0.3s;
+}
+
+.service-card:hover .service-icon {
+    transform: scale(1.1);
+}
+
+/* Service Title */
+.service-title {
+    font-size: 1.3rem;
+    font-weight: bold;
+    margin-bottom: 1rem;
+    color: #9a981a;
+}
+
+/* Service Description */
+.service-description {
+    font-size: 0.9rem;
+    color: rgba(255, 255, 255, 0.9);
+    margin-bottom: 1rem;
+}
+
+/* Responsive Layout */
+@media (max-width: 768px) {
+    .service-card {
+        width: 200px;
+    }
+
+    .service-title {
+        font-size: 1.1rem;
+    }
+
+    .service-description {
+        font-size: 0.8rem;
+    }
+}

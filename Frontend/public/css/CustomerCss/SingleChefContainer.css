@@ -1,0 +1,20 @@
+.single-chef-container {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    justify-content: center;
+    padding: 20px;
+}
+
+/* Responsive behavior for smaller screens */
+@media (max-width: 768px) {
+    .single-chef-card {
+        flex: 1 1 calc(50% - 20px); /* 2 cards per row on medium screens */
+    }
+}
+
+@media (max-width: 480px) {
+    .single-chef-card {
+        flex: 1 1 100%; /* 1 card per row on small screens */
+    }
+}

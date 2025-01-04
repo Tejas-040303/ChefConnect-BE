@@ -1,0 +1,88 @@
+const chefData = [
+    {
+        id: 1,
+        chefPhotoPath: 'https://via.placeholder.com/150',
+        chefName: 'Chef Gordon Ramsay',
+        chefSpecialty: 'Michelin Star Cuisine',
+        price: '$150 per hour',
+    },
+    {
+        id: 2,
+        chefPhotoPath: 'https://via.placeholder.com/150',
+        chefName: 'Chef Nigella Lawson',
+        chefSpecialty: 'Desserts & Baking',
+        price: '$120 per hour',
+    },
+    {
+        id: 3,
+        chefPhotoPath: 'https://via.placeholder.com/150',
+        chefName: 'Chef Jamie Oliver',
+        chefSpecialty: 'Italian and British Cuisine',
+        price: '$130 per hour',
+    },
+    {
+        id: 4,
+        chefPhotoPath: 'https://via.placeholder.com/150',
+        chefName: 'Chef Thomas Keller',
+        chefSpecialty: 'French Cuisine',
+        price: '$160 per hour',
+    },
+    {
+        id: 5,
+        chefPhotoPath: 'https://via.placeholder.com/150',
+        chefName: 'Chef Massimo Bottura',
+        chefSpecialty: 'Modern Italian Cuisine',
+        price: '$180 per hour',
+    },
+    {
+        id: 6,
+        chefPhotoPath: 'https://via.placeholder.com/150',
+        chefName: 'Chef Alice Waters',
+        chefSpecialty: 'Farm-to-Table Cooking',
+        price: '$140 per hour',
+    },
+    {
+        id: 7,
+        chefPhotoPath: 'https://via.placeholder.com/150',
+        chefName: 'Chef Yotam Ottolenghi',
+        chefSpecialty: 'Middle Eastern and Vegetarian',
+        price: '$125 per hour',
+    },
+    {
+        id: 8,
+        chefPhotoPath: 'https://via.placeholder.com/150',
+        chefName: 'Chef Heston Blumenthal',
+        chefSpecialty: 'Molecular Gastronomy',
+        price: '$200 per hour',
+    },
+    {
+        id: 9,
+        chefPhotoPath: 'https://via.placeholder.com/150',
+        chefName: 'Chef Dominique Ansel',
+        chefSpecialty: 'Pastries & Innovative Desserts',
+        price: '$150 per hour',
+    },
+    {
+        id: 10,
+        chefPhotoPath: 'https://via.placeholder.com/150',
+        chefName: 'Chef Gaggan Anand',
+        chefSpecialty: 'Progressive Indian Cuisine',
+        price: '$190 per hour',
+    },
+    {
+        id: 11,
+        chefPhotoPath: 'https://via.placeholder.com/150',
+        chefName: 'Chef René Redzepi',
+        chefSpecialty: 'Nordic Cuisine',
+        price: '$170 per hour',
+    },
+    {
+        id: 12,
+        chefPhotoPath: 'https://via.placeholder.com/150',
+        chefName: 'Chef Daniel Humm',
+        chefSpecialty: 'Contemporary American Cuisine',
+        price: '$185 per hour',
+    },
+];
+
+export default chefData;
