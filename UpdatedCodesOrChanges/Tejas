@@ -1,0 +1,74 @@
+// // Date:- 29/12/24
+// // Folder Created:- Customer
+// // File Created :- Home.jsx
+// descriptions:- User dashborad Home
+//  path:- Frontend\src\Customer\Home.jsx
+
+// // Code:- import React from 'react';
+// // import SidePanel from '../CustomerComponents/Home/SidePanel';
+// // // import '../../public/css/UserCss/Home.css';
+
+// // function Home() {
+// //     return (
+// //         <div className="grid-container">
+// //             <div className="item1">
+// //                 <SidePanel />
+// //             </div>
+// //             <div className="item2">Content for Item 2</div>
+// //             <div className="item3">Content for Item 3</div>
+// //         </div>
+// //     );
+// // }
+
+// // export default Home;
+
+// // 30/12/24
+// // File Created:- Home.class 
+
+// /* .grid-container {
+//     display: grid;
+//     grid-template-columns: repeat(6, 1fr);
+//     gap: 10px;
+//     background-color: #2196F3;
+//     padding: 10px;
+// }
+
+// .grid-container > div {
+//     background-color: rgba(255, 255, 255, 0.8);
+//     text-align: center;
+//     padding: 20px 0;
+//     font-size: 30px;
+// }
+
+// .item1 {
+//     height: 85vh;
+//     grid-area: ;
+// }
+
+// .item2 {
+//     height: 20vh;
+//     grid-column: 2 / 7;
+// }
+
+// .item3 {
+//     grid-column: 2 / 7;
+//     grid-row: 2;
+// }
+
+// /* Responsive Styles */
+// @media (max-width: 768px) {
+//     .grid-container {
+//         grid-template-columns: repeat(2, 1fr);
+//     }
+
+//     .item1 {
+//         grid-column: 1 / span 2;
+//         height: 50vh;
+//     }
+
+//     .item2,
+//     .item3 {
+//         grid-column: 1 / span 2;
+//     }
+// } */
+
