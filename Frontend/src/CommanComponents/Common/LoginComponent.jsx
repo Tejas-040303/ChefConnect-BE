@@ -20,16 +20,25 @@ function LoginComponent() {
         setIsLoading(true);
 
         try {
-            const response = await fetch('/auth/login', {
+            const payload = { ...formData, role: selectedRole };
+            const response = await fetch('http://localhost:8080/auth/login', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ ...formData }),
+                body: JSON.stringify(payload),
             });
 
             const data = await response.json();
             if (response.ok) {
                 alert(data.message);
                 setErrorMessage('');
+                // Redirect based on role
+                if (data.role === 'Chef') {
+                    // Navigate to Chef dashboard
+                    window.location.href = '/chef/dashboard';
+                } else if (data.role === 'Customer') {
+                    // Navigate to Customer dashboard
+                    window.location.href = '/customer/';
+                }
             } else {
                 setErrorMessage(data.error || data.message);
             }
@@ -47,6 +56,39 @@ function LoginComponent() {
                     <form onSubmit={handleLogin} className="p-4 border rounded shadow-lg bg-light">
                         <h2 className="text-center mb-4">Welcome Back</h2>
                         {errorMessage && <div className="alert alert-danger">{errorMessage}</div>}
+                        
+                        {/* Role Selection Dropdown */}
+                        <div className="dropdown my-4">
+                            <button
+                                className="btn dropdown-toggle"
+                                type="button"
+                                data-bs-toggle="dropdown"
+                                aria-expanded="false"
+                            >
+                                {selectedRole ? `Login as: ${selectedRole}` : 'Login as:'}
+                            </button>
+                            <ul className="dropdown-menu">
+                                <li>
+                                    <button
+                                        className="dropdown-item"
+                                        type="button"
+                                        onClick={() => handleRoleSelection('Chef')}
+                                    >
+                                        Chef
+                                    </button>
+                                </li>
+                                <li>
+                                    <button
+                                        className="dropdown-item"
+                                        type="button"
+                                        onClick={() => handleRoleSelection('Customer')}
+                                    >
+                                        Customer
+                                    </button>
+                                </li>
+                            </ul>
+                        </div>
+
                         <div className="form-group my-3">
                             <label htmlFor="email" className="form-label">Email Address</label>
                             <input
@@ -73,7 +115,11 @@ function LoginComponent() {
                                 required
                             />
                         </div>
-                        <button type="submit" className="btn btn-primary w-100" disabled={isLoading}>
+                        <button
+                            type="submit"
+                            className="btn btn-primary w-100"
+                            disabled={isLoading || !selectedRole}
+                        >
                             {isLoading ? 'Logging in...' : 'Login'}
                         </button>
                     </form>

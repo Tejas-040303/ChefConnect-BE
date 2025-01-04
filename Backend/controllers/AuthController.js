@@ -5,46 +5,35 @@ const bcrypt = require("bcrypt");
 const signup = async (req, res) => {
   try {
     const { name, email, password, role, location } = req.body;
-    
-    // Check if role is valid (Chef or Customer)
+
     if (!role || (role !== "Chef" && role !== "Customer")) {
       return res.status(400).json({ message: "Invalid role", success: false });
     }
 
-    // Check if user already exists
-    const user = await UserModel.findOne({ email });
-    if (user) {
-      return res
-        .status(409)
-        .json({ message: "User already exists", success: false });
+    const userExists = await UserModel.findOne({ email });
+    if (userExists) {
+      return res.status(409).json({ message: "User already exists", success: false });
     }
 
-    // If the role is Chef, location should be provided
     if (role === "Chef" && !location) {
       return res.status(400).json({ message: "Location is required for Chef role", success: false });
     }
 
-    // Create new user with the provided details
-    const userModel = new UserModel({ name, email, password, role, location });
-    
-    // Hash the password before saving
-    userModel.password = await bcrypt.hash(password, 10);
-    
-    // Save the user in the database
-    await userModel.save();
+    const newUser = new UserModel({ name, email, password, role, location });
+    newUser.password = await bcrypt.hash(password, 10);
+    await newUser.save();
 
     res.status(201).json({
-      message: "Signup successfully",
+      message: "Signup successful",
       success: true,
+      role,
     });
   } catch (error) {
     console.error(error);
-    res.status(500).json({
-      message: "Internal server error",
-      success: false,
-    });
+    res.status(500).json({ message: "Internal server error", success: false });
   }
 };
+
 
 const login = async (req, res) => {
   try {
