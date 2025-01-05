@@ -1,9 +1,11 @@
 import React from 'react';
+import NoHistory from '../CustomerComponents/History/NoHistory';
 
 function History() {
     return ( 
         <>
-            <h2>History</h2>
+            {}
+            <NoHistory />
         </>
      );
 }

@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-
+// import '../../../public/css/CommanCss/LoginComponent.css';
 function LoginComponent() {
     const [selectedRole, setSelectedRole] = useState('');
     const [formData, setFormData] = useState({ email: '', password: '' });

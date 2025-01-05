@@ -1,9 +1,9 @@
 import React from 'react';
-
+import CustomerProfileComponent from '../CustomerComponents/Profile/CustomerProfileComponent';
 function Profile() {
     return ( 
         <>
-            <h2>Profile</h2>
+            <CustomerProfileComponent />
         </>
      );
 }
