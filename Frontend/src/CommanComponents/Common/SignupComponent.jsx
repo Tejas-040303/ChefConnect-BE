@@ -40,6 +40,7 @@ function SignupComponent() {
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(payload),
       });
+        axios.post("http://localhost:8080/auth/signup", {payload});
   
       const data = await response.json();
       if (response.ok) {
