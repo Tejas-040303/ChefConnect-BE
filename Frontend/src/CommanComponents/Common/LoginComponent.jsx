@@ -1,5 +1,6 @@
-import React, { useState } from 'react';
-// import '../../../public/css/CommanCss/LoginComponent.css';
+import React, { useState } from "react";
+import axios from 'axios';
+
 function LoginComponent() {
     const [selectedRole, setSelectedRole] = useState('');
     const [formData, setFormData] = useState({ email: '', password: '' });
@@ -21,29 +22,22 @@ function LoginComponent() {
 
         try {
             const payload = { ...formData, role: selectedRole };
-            const response = await fetch('http://localhost:8080/auth/login', {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify(payload),
-            });
+            const response = await axios.post('http://localhost:8080/auth/login', payload);
 
-            const data = await response.json();
-            if (response.ok) {
+            if (response.status === 200) {
+                const data = response.data;
                 alert(data.message);
                 setErrorMessage('');
+
                 // Redirect based on role
                 if (data.role === 'Chef') {
-                    // Navigate to Chef dashboard
                     window.location.href = '/chef/dashboard';
                 } else if (data.role === 'Customer') {
-                    // Navigate to Customer dashboard
                     window.location.href = '/customer/';
                 }
-            } else {
-                setErrorMessage(data.error || data.message);
             }
         } catch (err) {
-            setErrorMessage('Failed to login. Try again.');
+            setErrorMessage(err.response?.data?.error || 'Failed to login. Try again.');
         } finally {
             setIsLoading(false);
         }
@@ -130,3 +124,4 @@ function LoginComponent() {
 }
 
 export default LoginComponent;
+
