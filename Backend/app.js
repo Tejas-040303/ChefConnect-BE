@@ -15,7 +15,7 @@ app.get("/ping", (req, res) => {
 app.use(express.json()); // Use express.json() for parsing JSON payloads
 app.use(bodyParser.json());
 app.use(cors());
-app.use("/auth", AuthRouter);
+//app.use("/auth", AuthRouter);
 
 
 app.listen(PORT, () => {
