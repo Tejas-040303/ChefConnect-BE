@@ -1,16 +1,6 @@
-    // const handleSubmit = (e) => {
-    //     e.preventDefault()
-    //     axios.post("http://localhost:3001/register", { name, email, password })
-    //     .then(result => {console.log(result)
-    //     navigate("/login")
-    //     })
-    //     .catch(err => console.log(err))
-    // }
-
 import React, { useState } from "react";
-import {Link} from "react-router-dom";
-import axios from 'axios';
 import { useNavigate } from "react-router-dom";
+import axios from 'axios';
 
 function SignupComponent() {
   const [selectedRole, setSelectedRole] = useState("");
@@ -22,7 +12,7 @@ function SignupComponent() {
 
   const handleRoleSelection = (role) => {
     setSelectedRole(role);
-    if (role !== "Chef") setLocation("");
+    if (role !== "Chef") setLocation(""); // Clear location if role isn't Chef
   };
 
   const handleInputChange = (e) => {
@@ -30,34 +20,38 @@ function SignupComponent() {
     setFormData({ ...formData, [name]: value });
   };
 
-  const handleSubmit = async (e) => {
+  const handleSubmit = (e) => {
     e.preventDefault();
-    const payload = { ...formData, role: selectedRole, location: selectedRole === "Chef" ? location : undefined };
-  
-    try {
-      const response = await fetch("http://localhost:8080/auth/signup", { // Use backend's full URL
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(payload),
-      });
-        axios.post("http://localhost:8080/auth/signup", {payload});
-  
-      const data = await response.json();
-      if (response.ok) {
-        setSuccessMessage(data.message);
-        setErrorMessage("");
-        if (data.role === "Customer") {
-          navigate("/customer/");
+
+    const payload = { 
+      ...formData, 
+      role: selectedRole, 
+      location: selectedRole === "Chef" ? location : undefined 
+    };
+
+    // Use axios to send the POST request
+    axios.post("http://localhost:8080/auth/signup", payload)
+      .then((result) => {
+        const data = result.data; // Axios automatically parses the response as JSON
+        if (result.status === 200) {
+          setSuccessMessage(data.message);
+          setErrorMessage("");
+          if (data.role === "Customer") {
+            navigate("/customer/");
+          }
         }
-      } else {
-        setErrorMessage(data.error || data.message);
+      })
+      .catch((err) => {
+        // Handle errors (e.g., network errors or backend errors)
+        if (err.response) {
+          // If there's a response, handle it (e.g., validation errors from the backend)
+          setErrorMessage(err.response.data.error || err.response.data.message);
+        } else {
+          setErrorMessage("Failed to signup. Try again.");
+        }
         setSuccessMessage("");
-      }
-    } catch (err) {
-      setErrorMessage("Failed to signup. Try again.");
-    }
+      });
   };
-  
 
   return (
     <div className="container">
