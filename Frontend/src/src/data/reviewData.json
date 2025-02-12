@@ -1,0 +1,41 @@
+{
+    "reviews": [
+      { 
+        "src": "https://picsum.photos/seed/img7/600/400", 
+        "alt": "Reviewer A", 
+        "rating": "5", 
+        "text": "Amazing experience! The chef was incredibly professional and the food was outstanding." 
+      },
+      { 
+        "src": "https://picsum.photos/seed/img8/600/400", 
+        "alt": "Reviewer B", 
+        "rating": "4.5", 
+        "text": "Great service! Loved the attention to detail and the menu choices." 
+      },
+      { 
+        "src": "https://picsum.photos/seed/img9/600/400", 
+        "alt": "Reviewer C", 
+        "rating": "4", 
+        "text": "Good overall, but the dishes could have been a little spicier for my taste." 
+      },
+      { 
+        "src": "https://picsum.photos/seed/img10/600/400", 
+        "alt": "Reviewer D", 
+        "rating": "5", 
+        "text": "Exceptional! The chef exceeded our expectations and made our evening special." 
+      },
+      { 
+        "src": "https://picsum.photos/seed/img11/600/400", 
+        "alt": "Reviewer E", 
+        "rating": "4.7", 
+        "text": "Very professional and accommodating. Would definitely book again." 
+      },
+      { 
+        "src": "https://picsum.photos/seed/img12/600/400", 
+        "alt": "Reviewer F", 
+        "rating": "4.8", 
+        "text": "Loved it! The chef was punctual and the presentation of the dishes was fantastic." 
+      }
+    ]
+  }
+  
