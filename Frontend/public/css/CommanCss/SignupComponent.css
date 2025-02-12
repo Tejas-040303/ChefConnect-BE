@@ -1,11 +1,10 @@
 /* Full-screen background image */
-.login-container {
+.signup-container {
     display: flex;
     justify-content: center;
     align-items: center;
     height: 100vh;
-    background-image: url('../../public/Bg.jpg'); /* Your background image */
-    opacity: 0.8;
+    background-image: url('/Bg.jpg'); /* Root-relative path */
     background-size: cover;
     background-position: center;
     position: relative;
@@ -13,24 +12,25 @@
 }
 
 /* Adding a subtle overlay on the background */
-.login-container::before {
+.signup-container::before {
     content: '';
     position: absolute;
     top: 0;
     left: 0;
     width: 100%;
     height: 100%;
-    background-color: rgba(0, 0, 0, 0.5); /* Dark overlay for contrast */
+    background-color: rgba(0, 0, 0, 0.5);
     z-index: 1;
+    opacity: 0.8; /* Moved opacity here */
 }
 
 /* The main container on top of the background */
-.login-content {
+.signup-content {
     display: flex;
     flex-direction: row;
     width: 60%;
     max-width: 1200px;
-    height: 80%;
+    height: 90%;
     margin-top: -45px !important;
     background-color: #fff;
     box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
@@ -42,7 +42,7 @@
 
 /* Left Section (Image) */
 .image-section {
-    flex: 1; /* Takes up half the space */
+    flex: 1;
     display: flex;
     justify-content: center;
     align-items: center;
@@ -50,15 +50,16 @@
     overflow: hidden;
 }
 
-.side-image {
+.image-section img {
     width: 100%;
     height: 100%;
     object-fit: cover;
 }
 
 /* Right Section (Form) */
-.form-section {
-    flex: 1/2; /* Takes up the other half */
+.signup-form-inner {
+    height: 100%;
+    flex: 1;
     display: flex;
     justify-content: center;
     align-items: center;
@@ -67,13 +68,14 @@
 }
 
 /* Styling the form */
-.login-form-inner {
+.signup-form-inner form {
     width: 100%;
     max-width: 400px;
     padding: 30px;
     border-radius: 8px;
     background-color: rgba(196, 156, 96, 0.5);
 }
+
 
 /* Form Elements */
 .form-title {
@@ -95,7 +97,7 @@
 .input-label {
     display: block;
     font-size: 14px;
-    margin-bottom: 5px;
+    margin: 0.35rem;
 }
 
 .input-field {
@@ -116,6 +118,7 @@
     cursor: pointer;
     font-size: 16px;
     transition: background-color 0.3s ease;
+    margin-top: 10px;
 }
 
 .submit-button:hover {
@@ -127,9 +130,10 @@
     cursor: not-allowed;
 }
 
+
 /* Responsive design */
 @media (max-width: 768px) {
-    .login-content {
+    .signup-content {
         flex-direction: column;
         height: auto;
         margin-top: 0;

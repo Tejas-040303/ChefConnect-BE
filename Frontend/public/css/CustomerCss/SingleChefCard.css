@@ -1,0 +1,155 @@
+/* SingleChefCard.css */
+.chef-card-wrapper {
+    position: relative;
+    perspective: 1000px;
+    width: 17.5vw;
+}
+
+.chef-card {
+    background: #94A3B8;
+    border-radius: 20px;
+    overflow: hidden;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.08);
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+}
+
+.chef-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 12px 32px rgba(0, 0, 0, 0.12);
+}
+
+.chef-image-container {
+    position: relative;
+    height: 240px;
+    overflow: hidden;
+}
+
+.chef-profile-image {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.3s ease;
+}
+
+.chef-card:hover .chef-profile-image {
+    transform: scale(1.05);
+}
+
+.price-badge {
+    position: absolute;
+    bottom: 16px;
+    right: 16px;
+    background: linear-gradient(135deg, #ff6b6b, #ff8e53);
+    color: white;
+    padding: 8px 16px;
+    border-radius: 20px;
+    font-weight: 600;
+    box-shadow: 0 4px 12px rgba(255, 107, 107, 0.3);
+}
+
+.chef-info {
+    padding: 1.5rem;
+    background: #94A3B8;
+    flex-grow: 1;
+    display: flex;
+    flex-direction: column;
+}
+
+.chef-name {
+    font-size: 1.3rem;
+    font-weight: 700;
+    color: #2d3436;
+    margin-bottom: 0.5rem;
+}
+
+.specialty-tag {
+    color: #636e72;
+    font-size: 0.95rem;
+    margin-bottom: 1.2rem;
+    line-height: 1.4;
+    flex-grow: 1;
+}
+
+.cta-button {
+    background: linear-gradient(135deg, #4b6cb7, #182848);
+    color: white;
+    border: none;
+    padding: 12px 24px;
+    border-radius: 12px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    align-self: flex-start;
+}
+
+.cta-button:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(75, 108, 183, 0.3);
+}
+
+/* Responsive Design */
+@media (max-width: 1024px) {
+    .chef-grid {
+        gap: 2rem;
+    }
+    
+    .chef-image-container {
+        height: 200px;
+    }
+}
+
+@media (max-width: 768px) {
+    .chef-grid {
+        grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+        gap: 1.5rem;
+    }
+    
+    .chef-name {
+        font-size: 1.2rem;
+    }
+    
+    .cta-button {
+        padding: 10px 20px;
+        font-size: 0.9rem;
+    }
+}
+
+@media (max-width: 480px) {
+    .single-chef-container {
+        padding: 1.5rem;
+    }
+    
+    .price-badge {
+        font-size: 0.9rem;
+        padding: 6px 12px;
+    }
+    
+    .chef-info {
+        padding: 1.2rem;
+    }
+}
+
+/* Image Fallback Styling */
+.chef-profile-image {
+    background: linear-gradient(145deg, #f8f9fa, #e9ecef);
+}
+
+/* Hover Overlay Effect */
+.chef-image-container::after {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(transparent 60%, rgba(0, 0, 0, 0.4));
+    opacity: 0;
+    transition: opacity 0.3s ease;
+}
+
+.chef-card:hover .chef-image-container::after {
+    opacity: 1;
+}

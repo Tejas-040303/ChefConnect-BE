@@ -1,0 +1,36 @@
+.multi-select-dropdown {
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    padding: 10px;
+    max-width: 100%;
+    cursor: pointer;
+    position: relative;
+}
+
+.dropdown-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.selected-count {
+    font-weight: bold;
+    color: #007bff;
+}
+
+.dropdown-options {
+    max-height: 200px;
+    overflow-y: auto;
+    margin-top: 10px;
+    border-top: 1px solid #ccc;
+    padding-top: 10px;
+}
+
+.checkbox-label {
+    display: block;
+    padding: 5px 0;
+}
+
+.checkbox-label input {
+    margin-right: 10px;
+}

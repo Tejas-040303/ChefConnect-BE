@@ -1,0 +1,85 @@
+/* Basic Styling */
+.chef-profile-container {
+    /* max-width: 1200px;. */
+    height: 80vh;
+    margin-top: -10px !important;
+}
+
+.chef-header {
+    display: flex;
+    /* gap: 2rem;
+    margin-bottom: 3rem; */
+}
+
+.chef-main-image {
+    width: 300px;
+    height: 300px;
+    border-radius: 15px;
+    object-fit: cover;
+}
+
+.metadata {
+    /* margin-top: 1rem;
+    padding: 1rem; */
+    background: #f8f9fa;
+    border-radius: 8px;
+}
+
+.metadata p {
+    margin: 0.5rem 0;
+}
+
+/* Tables Styling */
+.section {
+    /* margin: 2rem 0; */
+    padding: 1.5rem;
+    background: white;
+    border-radius: 10px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+}
+
+.dishes-tables {
+    display: grid;
+    gap: 2rem;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+}
+
+.dish-category table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.dish-category td {
+    padding: 0.8rem;
+    border-bottom: 1px solid #eee;
+}
+
+.schedule-table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.schedule-table th,
+.schedule-table td {
+    padding: 1rem;
+    text-align: left;
+    border-bottom: 1px solid #eee;
+}
+
+.schedule-table th {
+    background-color: #f8f9fa;
+}
+
+.available {
+    background-color: #e8f5e9;
+}
+
+.unavailable {
+    background-color: #ffebee;
+    color: #757575;
+}
+
+.bio {
+    line-height: 1.6;
+    color: #444;
+}

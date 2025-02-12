@@ -1,0 +1,90 @@
+.profile-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: auto !important;
+  height: 80vh;
+  margin: 1rem;
+  padding: 1rem;
+}
+
+.customer-form {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: end; /* Centers elements horizontally */
+  flex-wrap: wrap;
+  align-content: stretch;
+}
+
+.customer-text {
+  font-size: 2.25rem;
+  font-family: "Playwrite IN", serif;
+  font-optical-sizing: auto;
+}
+
+.customer-image-input {
+  margin-top: 1rem;
+  margin-left: 0; /* Aligning with other form elements */
+  display: flex;
+  width: 100%;
+  flex-direction: column;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: flex-start; /* Align with form layout */
+  transition: all 0.3s ease-in-out; /* Smooth transition effect */
+}
+
+/* Adjust when editing mode is enabled */
+.customer-image-input.editing {
+  width: 64%; /*Increase width */
+  margin-left: 13.35%; /*Shift towards the left */
+  align-items: flex-end; /* Keep consistent alignment */
+}
+
+.customer-label,
+.customer-input {
+  width: 100%;
+  padding: 0.5rem;
+  font-size: 1rem;
+  margin: 0.5rem 0 0 0;
+  font-family: "Playwrite IN", serif;
+  font-optical-sizing: auto;
+}
+
+.customer-label.editing {
+  /* width: 120%; Increase width */
+  margin-left: -73%;
+}
+
+.customer-input {
+  width: 100%;
+  padding: 0.5rem;
+  font-size: 1rem;
+  border: 1px solid #2599cf;
+}
+
+.customer-input.editing {
+  width: 150%; /* Increase width */
+  margin-left: -50%; /* Shift it to the left */
+}
+
+.customer-btn {
+  background-color: #253fcf;
+  display: block;
+  border-radius: 5px;
+  font-size: 1rem;
+  padding: 0.5rem;
+  margin: 1rem auto; /* Centers the button horizontally */
+  font-size: 1rem;
+  color: #ffffff;
+  text-align: center;
+  width: fit-content; /* Adjusts width to content */
+}
+
+.change-btn-div {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin: 1rem auto;
+}

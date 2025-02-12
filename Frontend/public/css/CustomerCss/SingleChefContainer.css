@@ -1,20 +1,45 @@
+/* SingleChefContainer.css */
 .single-chef-container {
+    padding: 2rem;
+    background: linear-gradient(145deg, #fff5e6, #ffffff);
+}
+
+.chef-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 2.5rem;
+    max-width: 1440px;
+    margin: 0 auto;
+}
+
+.loading-container {
     display: flex;
-    flex-wrap: wrap;
-    gap: 10px;
-    justify-content: center;
-    padding: 20px;
+    flex-direction: column;
+    align-items: center;
+    gap: 1.5rem;
+    padding: 4rem 0;
 }
 
-/* Responsive behavior for smaller screens */
-@media (max-width: 768px) {
-    .single-chef-card {
-        flex: 1 1 calc(50% - 20px); /* 2 cards per row on medium screens */
-    }
+.spinner {
+    width: 60px;
+    height: 60px;
+    border: 5px solid rgba(255, 107, 107, 0.2);
+    border-top-color: #ff6b6b;
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
 }
 
-@media (max-width: 480px) {
-    .single-chef-card {
-        flex: 1 1 100%; /* 1 card per row on small screens */
-    }
+.error-banner {
+    padding: 1.5rem;
+    background: #ffebee;
+    color: #c62828;
+    border-radius: 12px;
+    margin: 2rem;
+    text-align: center;
+    font-weight: 500;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+}
+
+@keyframes spin {
+    to { transform: rotate(360deg); }
 }
