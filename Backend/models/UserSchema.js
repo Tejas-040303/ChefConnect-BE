@@ -1,45 +1,41 @@
-const mongoose = require("mongoose");
+// UserSchema.js
+const mongoose = require('mongoose');
 
-const Schema = mongoose.Schema;
-
-// Define the schema for the user
-const userSchema = new Schema({
-  name: {
-    type: String,
-    required: true,
-    trim: true,
-  },
-  email: {
-    type: String,
-    required: true,
-    unique: true,
-    lowercase: true,
-    trim: true,
-  },
-  password: {
-    type: String,
-    required: true,
-    minlength: 6,
-  },
-  role: {
-    type: String,
-    required: true,
-    enum: ["Chef", "Customer"], // Validate the role to only allow Chef or Customer
-  },
-  location: {
-    type: String,
-    trim: true,
-    required: function () {
-      return this.role === "Chef"; // Location is required only for Chefs
+const UserSchema = new mongoose.Schema(
+  {
+    name: { 
+      type: String, 
+      required: true,
+      minlength: 3,
+      maxlength: 100 
+    },
+    email: { 
+      type: String, 
+      required: true, 
+      unique: true 
+    },
+    password: { 
+      type: String, 
+      required: true, 
+      minlength: 4 
+    },
+    role: { 
+      type: String, 
+      enum: ['Chef', 'Customer'], 
+      required: true 
+    },
+    // Only required if the user is a Chef
+    location: { 
+      type: String, 
+      required: function () { 
+        return this.role === 'Chef'; 
+      } 
     },
   },
-  createdAt: {
-    type: Date,
-    default: Date.now,
-  },
-});
+  { 
+    timestamps: true,
+    discriminatorKey: 'role' // This key will hold the discriminator value (Chef or Customer)
+  }
+);
 
-// Create and export the model
-const UserModel = mongoose.model("users", userSchema);
-
-module.exports = UserModel;
+module.exports = mongoose.model('User', UserSchema);
