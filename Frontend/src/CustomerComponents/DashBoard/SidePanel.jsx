@@ -10,6 +10,7 @@ function SidePanel({ onFilterChange }) {
         specialties: [],
     });
 
+    // Changed/Removed
     const specialtiesOptions = [
         { value: 'Chinese', label: 'Chinese' },
         { value: 'Italian', label: 'Italian' },

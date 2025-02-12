@@ -3,8 +3,7 @@ import SignupComponent from '../CommanComponents/Common/SignupComponent';
 
 function Signup() {
     return ( 
-        <div className="container">
-            <h2>Signup</h2>
+        <div className="">
             <SignupComponent/>
         </div>
      );

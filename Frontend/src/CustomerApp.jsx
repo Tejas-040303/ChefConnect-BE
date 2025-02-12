@@ -6,8 +6,10 @@ import DashBoard from './CustomerPages/DashBoard';
 import Booking from './CustomerPages/Booking';
 import History from './CustomerPages/History';
 import Profile from './CustomerPages/Profile';
-import Payment from './CustomerPages/Payment';
 import SingleChefContainer from './CustomerComponents/DashBoard/SingleChefContainer';
+import ChefPreview from './CustomerComponents/DashBoard/ChefPreview';
+import ChefBooking from './CustomerComponents/DashBoard/ChefBooking'; // Add this import
+import BookingConfirmation from './CustomerComponents/DashBoard/BookingConfirmation';
 
 function CustomerApp() {
     return (
@@ -19,8 +21,9 @@ function CustomerApp() {
                 <Route path="/order-history" element={<History />} />
                 <Route path="/profile" element={<Profile />} />
                 <Route path="/dashboard/single-chef" element={<SingleChefContainer />} />
-                {/* Dynamic Route for Payment */}
-                <Route path="/payment/:chefId" element={<Payment />} />
+                <Route path="/chef-profile/:id" element={<ChefPreview />} />
+                <Route path="/booking/:chefId" element={<ChefBooking />} />
+                <Route path="/booking-confirmation/:orderId" element={<BookingConfirmation />} />
             </Routes>
             <BottomNavbar />
         </>

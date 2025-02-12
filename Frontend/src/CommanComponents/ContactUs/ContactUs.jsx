@@ -1,5 +1,5 @@
 import React from 'react';
-
+import '../../../public/css/CommanCss/ContactUs.css';
 function ContactUS() {
     return ( 
         <div className="form">

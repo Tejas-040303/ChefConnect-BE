@@ -25,7 +25,7 @@ function Hero() {
                 </div>
                 <div className="hero-image-container">
                     <img
-                        src="/heroPNG.png"
+                        src="../public/heroJPG.png"
                         alt="Images of Chefs"
                         className="hero-image"
                     />

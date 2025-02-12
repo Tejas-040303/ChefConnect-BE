@@ -1,18 +1,22 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import axios from 'axios';
+import "../../../public/css/CommanCss/SignupComponent.css";
 
 function SignupComponent() {
   const [selectedRole, setSelectedRole] = useState("");
   const [location, setLocation] = useState("");
-  const [formData, setFormData] = useState({ name: "", email: "", password: "" });
+  const [formData, setFormData] = useState({
+    name: "",
+    email: "",
+    password: "",
+  });
   const [errorMessage, setErrorMessage] = useState("");
   const [successMessage, setSuccessMessage] = useState("");
   const navigate = useNavigate();
 
-  const handleRoleSelection = (role) => {
-    setSelectedRole(role);
-    if (role !== "Chef") setLocation(""); // Clear location if role isn't Chef
+  const handleRoleSelection = (e) => {
+    setSelectedRole(e.target.value);
+    if (e.target.value !== "Chef") setLocation(""); // Clear location if not Chef
   };
 
   const handleInputChange = (e) => {
@@ -20,124 +24,133 @@ function SignupComponent() {
     setFormData({ ...formData, [name]: value });
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-
-    const payload = { 
-      ...formData, 
-      role: selectedRole, 
-      location: selectedRole === "Chef" ? location : undefined 
+    const payload = {
+      ...formData,
+      role: selectedRole,
+      location: selectedRole === "Chef" ? location : undefined,
     };
 
-    // Use axios to send the POST request
-    axios.post("http://localhost:8080/auth/signup", payload)
-      .then((result) => {
-        const data = result.data; // Axios automatically parses the response as JSON
-        if (result.status === 200) {
-          setSuccessMessage(data.message);
-          setErrorMessage("");
-          if (data.role === "Customer") {
-            navigate("/customer/");
-          }
-        }
-      })
-      .catch((err) => {
-        // Handle errors (e.g., network errors or backend errors)
-        if (err.response) {
-          // If there's a response, handle it (e.g., validation errors from the backend)
-          setErrorMessage(err.response.data.error || err.response.data.message);
-        } else {
-          setErrorMessage("Failed to signup. Try again.");
-        }
-        setSuccessMessage("");
+    try {
+      const response = await fetch("http://localhost:8080/auth/signup", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(payload),
       });
+
+      const data = await response.json();
+      if (response.ok) {
+        setSuccessMessage(data.message);
+        setErrorMessage("");
+        if (data.role === "Customer" || data.role === "Chef") {
+          navigate("/login");
+        }
+      } else {
+        setErrorMessage(data.error || data.message);
+        setSuccessMessage("");
+      }
+    } catch (err) {
+      setErrorMessage("Failed to signup. Try again.");
+    }
   };
 
   return (
-    <div className="container">
-      <h2>Signup</h2>
-      {errorMessage && <div className="alert alert-danger">{errorMessage}</div>}
-      {successMessage && <div className="alert alert-success">{successMessage}</div>}
-      <form onSubmit={handleSubmit} method="POST">
-        <div className="dropdown my-4">
-          <button
-            className="btn dropdown-toggle"
-            type="button"
-            data-bs-toggle="dropdown"
-            aria-expanded="false"
-          >
-            {selectedRole ? `Signup as: ${selectedRole}` : "Signup as:"}
-          </button>
-          <ul className="dropdown-menu">
-            <li>
-              <button className="dropdown-item" type="button" onClick={() => handleRoleSelection("Chef")}>
-                Chef
-              </button>
-            </li>
-            <li>
-              <button className="dropdown-item" type="button" onClick={() => handleRoleSelection("Customer")}>
-                Customer
-              </button>
-            </li>
-          </ul>
+    <div className="signup-container">
+      <div className="signup-content">
+        <div className="image-section">
+          <img
+            src="../../public/Food1.png"
+            alt="Delicious Food"
+            className="side-image"
+          />
         </div>
-        {selectedRole === "Chef" && (
-          <div className="form-group my-3">
-            <label htmlFor="location">Location</label>
-            <input
-              type="text"
-              className="form-control"
-              id="location"
-              value={location}
-              onChange={(e) => setLocation(e.target.value)}
-              placeholder="Enter your location"
-              required
-            />
+        <div className="signup-right">
+          <div className="signup-form-inner">
+            {errorMessage && <div className="error-message">{errorMessage}</div>}
+            {successMessage && <div className="success-message">{successMessage}</div>}
+
+            <form onSubmit={handleSubmit}>
+              <h2 className="form-title">Signup</h2>
+
+              <div className="form-group">
+                <label htmlFor="role" className="input-label">Role</label>
+                <select
+                  id="role"
+                  name="role"
+                  className="input-field"
+                  value={selectedRole}
+                  onChange={handleRoleSelection}
+                  required
+                >
+                  <option value="">Select Role</option>
+                  <option value="Chef">Chef</option>
+                  <option value="Customer">Customer</option>
+                </select>
+              </div>
+
+              <div className="form-group">
+                <label htmlFor="name" className="input-label">Name</label>
+                <input
+                  type="text"
+                  id="name"
+                  name="name"
+                  value={formData.name}
+                  onChange={handleInputChange}
+                  placeholder="Enter your name"
+                  className="input-field"
+                  required
+                />
+              </div>
+
+              <div className="form-group">
+                <label htmlFor="email" className="input-label">Email</label>
+                <input
+                  type="email"
+                  id="email"
+                  name="email"
+                  value={formData.email}
+                  onChange={handleInputChange}
+                  placeholder="Enter your email"
+                  className="input-field"
+                  required
+                />
+              </div>
+
+              {selectedRole === "Chef" && (
+                <div className="form-group">
+                  <label htmlFor="location" className="input-label">Location</label>
+                  <input
+                    type="text"
+                    id="location"
+                    value={location}
+                    onChange={(e) => setLocation(e.target.value)}
+                    placeholder="Enter your location"
+                    className="input-field"
+                    required
+                  />
+                </div>
+              )}
+
+              <div className="form-group">
+                <label htmlFor="password" className="input-label">Password</label>
+                <input
+                  type="password"
+                  id="password"
+                  name="password"
+                  value={formData.password}
+                  onChange={handleInputChange}
+                  placeholder="Enter your password"
+                  className="input-field"
+                  required
+                />
+              </div>
+
+              <button type="submit" className="submit-button">Signup</button>
+            </form>
           </div>
-        )}
-        <div className="form-group my-3">
-          <label htmlFor="name">Name</label>
-          <input
-            type="text"
-            className="form-control"
-            id="name"
-            name="name"
-            value={formData.name}
-            onChange={handleInputChange}
-            placeholder="Enter your name"
-            required
-          />
         </div>
-        <div className="form-group my-3">
-          <label htmlFor="email">Email</label>
-          <input
-            type="email"
-            className="form-control"
-            id="email"
-            name="email"
-            value={formData.email}
-            onChange={handleInputChange}
-            placeholder="Enter your email"
-            required
-          />
-        </div>
-        <div className="form-group my-3">
-          <label htmlFor="password">Password</label>
-          <input
-            type="password"
-            className="form-control"
-            id="password"
-            name="password"
-            value={formData.password}
-            onChange={handleInputChange}
-            placeholder="Enter your password"
-            required
-          />
-        </div>
-        <button type="submit" className="btn btn-primary">
-          Signup
-        </button>
-      </form>
+      </div>
     </div>
   );
 }

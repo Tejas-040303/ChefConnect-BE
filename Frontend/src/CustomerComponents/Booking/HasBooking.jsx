@@ -1,5 +1,6 @@
 import React from 'react';
 import { useLocation } from 'react-router-dom';
+import chefBookings from '../../data/chefBookingStatus';
 
 function HasBooking() {
     const location = useLocation();
@@ -7,17 +8,58 @@ function HasBooking() {
 
     return (
         <div>
-            {!chef ? ( // Correct condition for when no chef data is available
+            {!chef ? (
                 <div>
-                    <h1 className='text-center' style={{margin:'50px'}}>Book Chef Now</h1>
+                    <h1 className='text-center' style={{ margin: '50px' }}>Book Chef Now</h1>
+                    <table border="1" style={{ width: '100%', textAlign: 'center', borderCollapse: 'collapse' }}>
+                        <thead>
+                            <tr>
+                                <th>Sr No.</th>
+                                <th>Chef Name</th>
+                                <th>Specialty</th>
+                                <th>Price</th>
+                                <th>Date</th>
+                                <th>Status</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {chefBookings.map((booking) => (
+                                <tr key={booking.SrNo}>
+                                    <td>{booking.SrNo}</td>
+                                    <td>{booking.chefName}</td>
+                                    <td>{booking.chefSpecialty}</td>
+                                    <td>{booking.price}</td>
+                                    <td>{booking.date}</td>
+                                    <td>{booking.status}</td>
+                                </tr>
+                            ))}
+                        </tbody>
+                    </table>
                 </div>
             ) : (
                 <div>
-                    <h1>Chef Booking Details</h1>
-                    <img src={chef.chefPhotoPath} alt={chef.chefName} />
-                    <h2>{chef.chefName}</h2>
-                    <p>Specialty: {chef.chefSpecialty}</p>
-                    <p>Price: {chef.price}</p>
+                    <table border="1">
+                        <thead>
+                            <tr>
+                                <th>Sr No.</th>
+                                <th>Chef Name</th>
+                                <th>Specialty</th>
+                                <th>Price</th>
+                                <th>Date</th>
+                                <th>Status</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>1</td>
+                                <td>{chef.chefName}</td>
+                                <td>{chef.chefSpecialty}</td>
+                                <td>{chef.price}</td>
+                                <td>{chef.date}</td>
+                                <td>{chef.status}</td>
+                            </tr>
+                        </tbody>
+                    </table>
                 </div>
             )}
         </div>

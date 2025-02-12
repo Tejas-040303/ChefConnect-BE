@@ -1,4 +1,7 @@
-
+html, body{
+    background: #2D3436 !important;
+    background-color:  #2D3436 !important;
+}
 
 .signup, .login{
     border-radius: 0 !important;

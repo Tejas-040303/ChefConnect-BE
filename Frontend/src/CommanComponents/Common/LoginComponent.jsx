@@ -1,122 +1,138 @@
 import React, { useState } from "react";
-import axios from 'axios';
+import "../../../public/css/CommanCss/LoginComponent.css";
 
 function LoginComponent() {
-    const [selectedRole, setSelectedRole] = useState('');
-    const [formData, setFormData] = useState({ email: '', password: '' });
-    const [errorMessage, setErrorMessage] = useState('');
-    const [isLoading, setIsLoading] = useState(false);
+  const [selectedRole, setSelectedRole] = useState(""); // Track selected role
+  const [formData, setFormData] = useState({ email: "", password: "" });
+  const [errorMessage, setErrorMessage] = useState("");
+  const [isLoading, setIsLoading] = useState(false);
 
-    const handleRoleSelection = (role) => {
-        setSelectedRole(role);
-    };
+  const handleRoleSelection = (e) => {
+    setSelectedRole(e.target.value); // Update the selected role
+  };
 
-    const handleInputChange = (e) => {
-        const { name, value } = e.target;
-        setFormData({ ...formData, [name]: value });
-    };
+  const handleInputChange = (e) => {
+    const { name, value } = e.target;
+    setFormData({ ...formData, [name]: value });
+  };
 
-    const handleLogin = async (e) => {
-        e.preventDefault();
-        setIsLoading(true);
+  const handleLogin = async (e) => {
+    e.preventDefault();
+    setIsLoading(true);
 
-        try {
-            const payload = { ...formData, role: selectedRole };
-            const response = await axios.post('http://localhost:8080/auth/login', payload);
+    try {
+      const payload = { ...formData, role: selectedRole };
+      const response = await fetch("http://localhost:8080/auth/login", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(payload),
+      });
 
-            if (response.status === 200) {
-                const data = response.data;
-                alert(data.message);
-                setErrorMessage('');
+      const data = await response.json();
 
-                // Redirect based on role
-                if (data.role === 'Chef') {
-                    window.location.href = '/chef/dashboard';
-                } else if (data.role === 'Customer') {
-                    window.location.href = '/customer/';
-                }
-            }
-        } catch (err) {
-            setErrorMessage(err.response?.data?.error || 'Failed to login. Try again.');
-        } finally {
-            setIsLoading(false);
-        }
-    };
+      if (!response.ok) {
+        throw new Error(data.message || "Failed to login");
+      }
+      if (data.success) {
+        
+        localStorage.setItem("token", data.jwtToken); // Store the token
+        
+        alert(data.message);
+        // Redirect based on role
+        const redirectPath =
+          data.role === "Chef" ? "/chef/dashboard" : "/customer/";
+        window.location.href = redirectPath;
+      }
+    } catch (err) {
+      console.error(err.message);
+      setErrorMessage(err.message);
+    } finally {
+      setIsLoading(false);
+    }
+  };
 
     return (
-        <div className="container my-5">
-            <div className="row justify-content-center">
-                <div className="col-md-6">
-                    <form onSubmit={handleLogin} className="p-4 border rounded shadow-lg bg-light">
-                        <h2 className="text-center mb-4">Welcome Back</h2>
-                        {errorMessage && <div className="alert alert-danger">{errorMessage}</div>}
-                        
-                        {/* Role Selection Dropdown */}
-                        <div className="dropdown my-4">
-                            <button
-                                className="btn dropdown-toggle"
-                                type="button"
-                                data-bs-toggle="dropdown"
-                                aria-expanded="false"
-                            >
-                                {selectedRole ? `Login as: ${selectedRole}` : 'Login as:'}
-                            </button>
-                            <ul className="dropdown-menu">
-                                <li>
-                                    <button
-                                        className="dropdown-item"
-                                        type="button"
-                                        onClick={() => handleRoleSelection('Chef')}
-                                    >
-                                        Chef
-                                    </button>
-                                </li>
-                                <li>
-                                    <button
-                                        className="dropdown-item"
-                                        type="button"
-                                        onClick={() => handleRoleSelection('Customer')}
-                                    >
-                                        Customer
-                                    </button>
-                                </li>
-                            </ul>
-                        </div>
+        <div className="login-container">
+            {/* Centered Container */}
+            <div className="login-content">
+                {/* Left Section with Image */}
+                <div className="image-section">
+                    <img
+                        src="../../public/Food1.png"
+                        alt="Delicious Food"
+                        className="side-image"
+                    />
+                </div>
 
-                        <div className="form-group my-3">
-                            <label htmlFor="email" className="form-label">Email Address</label>
-                            <input
-                                type="email"
-                                className="form-control"
-                                id="email"
-                                name="email"
-                                value={formData.email}
-                                onChange={handleInputChange}
-                                placeholder="Enter email"
-                                required
-                            />
-                        </div>
-                        <div className="form-group my-3">
-                            <label htmlFor="password" className="form-label">Password</label>
-                            <input
-                                type="password"
-                                className="form-control"
-                                id="password"
-                                name="password"
-                                value={formData.password}
-                                onChange={handleInputChange}
-                                placeholder="Enter password"
-                                required
-                            />
-                        </div>
-                        <button
-                            type="submit"
-                            className="btn btn-primary w-100"
-                            disabled={isLoading || !selectedRole}
-                        >
-                            {isLoading ? 'Logging in...' : 'Login'}
-                        </button>
-                    </form>
+                {/* Right Section with Form */}
+                <div className="form-section">
+                    <div className="login-form-inner">
+                        <form onSubmit={handleLogin}>
+                            <h2 className="form-title">Welcome Back</h2>
+                            {errorMessage && <div className="error-message">{errorMessage}</div>}
+
+                            {/* Role Selection Dropdown */}
+                            <div className="role-selection input-group">
+                                <label htmlFor="role" className="input-label">
+                                    Select Role
+                                </label>
+                                <select
+                                    id="role"
+                                    name="role"
+                                    value={selectedRole}
+                                    onChange={handleRoleSelection}
+                                    required
+                                    className="input-field"
+                                >
+                                    <option value="" disabled>
+                                        Select your role
+                                    </option>
+                                    <option value="Chef">Chef</option>
+                                    <option value="Customer">Customer</option>
+                                </select>
+                            </div>
+
+                            <div className="input-group">
+                                <label htmlFor="email" className="input-label">
+                                    Email Address
+                                </label>
+                                <input
+                                    type="email"
+                                    className="input-field"
+                                    id="email"
+                                    name="email"
+                                    value={formData.email}
+                                    onChange={handleInputChange}
+                                    placeholder="Enter email"
+                                    required
+                                />
+                            </div>
+
+                            <div className="input-group">
+                                <label htmlFor="password" className="input-label">
+                                    Password
+                                </label>
+                                <input
+                                    type="password"
+                                    className="input-field"
+                                    id="password"
+                                    name="password"
+                                    value={formData.password}
+                                    onChange={handleInputChange}
+                                    placeholder="Enter password"
+                                    required
+                                />
+                            </div>
+
+                            <button
+                                type="submit"
+                                className="submit-button"
+                                disabled={isLoading || !selectedRole}
+                            >
+                                {isLoading ? 'Logging in...' : 'Login'}
+                            </button>
+                        </form>
+                    </div>
                 </div>
             </div>
         </div>
@@ -124,4 +140,3 @@ function LoginComponent() {
 }
 
 export default LoginComponent;
-

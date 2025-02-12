@@ -1,26 +1,32 @@
-import React from 'react';
-import { Link } from 'react-router-dom';
-import '../../../public/css/CustomerCss/SearchBar.css';
+import React, { useState } from 'react';
+import './SearchBar.css';
 
 function SearchBar({ setCurrentView }) {
+    const [activeButton, setActiveButton] = useState('singleChef'); // Set initial active button
+
+    const handleButtonClick = (view) => {
+        setActiveButton(view); // Update the active button
+        setCurrentView(view); // Trigger the view change
+    };
+
     return (
         <div className="search-bar-container">
-            <nav className="navbar navbar-expand-lg">
+            <nav className="navbar navbar-expand-lg w-100">
                 <div className="navbar-collapse" id="navbarSupportedContent">
                     <form className="form-inline search-form">
                         {/* Chef Team Buttons */}
                         <div className="btn-group chef-team">
                             <button
-                                className="btn btn-outline-primary"
+                                className={`btn btn-outline-primary ${activeButton === 'singleChef' ? 'active' : ''}`}
                                 type="button"
-                                onClick={() => setCurrentView('singleChef')}
+                                onClick={() => handleButtonClick('singleChef')}
                             >
                                 Single Chef
                             </button>
                             <button
-                                className="btn btn-outline-primary"
+                                className={`btn btn-outline-primary ${activeButton === 'chefCollaboration' ? 'active' : ''}`}
                                 type="button"
-                                onClick={() => setCurrentView('chefCollaboration')}
+                                onClick={() => handleButtonClick('chefCollaboration')}
                             >
                                 Chef Collaboration
                             </button>
