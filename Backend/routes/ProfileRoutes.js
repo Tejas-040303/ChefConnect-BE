@@ -16,6 +16,6 @@ router.put("/customerprofileupdate", authMiddleware, upload.single('profileImage
 
 // Chef routes
 router.post("/chefprofile", authMiddleware, chefProfile);
-router.put("/chefprofileupdate", authMiddleware, upload.single('profileImage'), updateChefProfile);
+router.patch("/chefprofileupdate", authMiddleware, upload.single('profileImage'), updateChefProfile);
 
 module.exports = router;
