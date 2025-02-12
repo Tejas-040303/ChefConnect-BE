@@ -8,6 +8,7 @@ function BottomNavbar() {
         { path: '/customer/dashboard', label: 'Dashboard' },
         { path: '/customer/booking', label: 'Booking' },
         { path: '/customer/order-history', label: 'History' },
+        { path: '/customer/community', label: 'Community' },
         { path: '/customer/profile', label: 'Profile' },
     ];
 

@@ -7,6 +7,7 @@ function LeftNavBar() {
     const links = [
         { path: '/chef/dashboard', label: 'DashBoard' },
         { path: '/chef/order', label: 'Orders' },
+        { path: '/chef/community', label: 'Community' },
         { path: '/chef/profile', label: 'Profile' },
         { path: '/chef/settings', label: 'Settings' },
     ];

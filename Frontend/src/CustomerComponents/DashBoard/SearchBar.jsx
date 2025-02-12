@@ -1,56 +1,48 @@
 import React, { useState } from 'react';
-import './SearchBar.css';
+// import './SearchBar.css';
+import '../../../public/css/CustomerCss/SearchBar.css';
+
 
 function SearchBar({ setCurrentView }) {
-    const [activeButton, setActiveButton] = useState('singleChef'); // Set initial active button
+    const [activeButton, setActiveButton] = useState('singleChef');
 
     const handleButtonClick = (view) => {
-        setActiveButton(view); // Update the active button
-        setCurrentView(view); // Trigger the view change
+        setActiveButton(view);
+        setCurrentView(view);
     };
 
     return (
-        <div className="search-bar-container">
-            <nav className="navbar navbar-expand-lg w-100">
-                <div className="navbar-collapse" id="navbarSupportedContent">
-                    <form className="form-inline search-form">
-                        {/* Chef Team Buttons */}
-                        <div className="btn-group chef-team">
-                            <button
-                                className={`btn btn-outline-primary ${activeButton === 'singleChef' ? 'active' : ''}`}
-                                type="button"
-                                onClick={() => handleButtonClick('singleChef')}
-                            >
-                                Single Chef
-                            </button>
-                            <button
-                                className={`btn btn-outline-primary ${activeButton === 'chefCollaboration' ? 'active' : ''}`}
-                                type="button"
-                                onClick={() => handleButtonClick('chefCollaboration')}
-                            >
-                                Chef Collaboration
-                            </button>
-                        </div>
+        <div className="search-container">
+            {/* Chef Selection Buttons */}
+            <div className="chef-buttons">
+                <button
+                    className={`chef-button ${activeButton === 'singleChef' ? 'chef-button-active' : ''}`}
+                    type="button"
+                    onClick={() => handleButtonClick('singleChef')}
+                >
+                    Single Chef
+                </button>
+                <button
+                    className={`chef-button ${activeButton === 'chefCollaboration' ? 'chef-button-active' : ''}`}
+                    type="button"
+                    onClick={() => handleButtonClick('chefCollaboration')}
+                >
+                    Chef Collaboration
+                </button>
+            </div>
 
-                        {/* Search Input and Button */}
-                        <div className="btn-group search-group">
-                            <input
-                                className="form-control search-input"
-                                type="search"
-                                placeholder="Search"
-                                aria-label="Search"
-                            />
-                            <button
-                                className="btn btn-outline-success search-button"
-                                type="submit"
-                            >
-                                Search
-                            </button>
-                        </div>
-                    </form>
-                </div>
-            </nav>
-            <div className="line"></div>
+            {/* Search Input & Button */}
+            <div className="search-box">
+                <input
+                    className="search-input"
+                    type="search"
+                    placeholder="Search for chefs or cuisines..."
+                    aria-label="Search"
+                />
+                <button className="search-button" type="submit">
+                    Search
+                </button>
+            </div>
         </div>
     );
 }

@@ -4,9 +4,10 @@ import { Routes, Route } from 'react-router-dom';
 import LeftNavBar from '../ChefComponents/LeftNavBar';
 import DashBoard from '../ChefComponents/DashBoard';
 import Order from '../ChefComponents/Order';
-import ChefProfile from '../ChefComponents/ChefProfile ';
+import Community from '../ChefComponents/Community';
+import ChefProfile from '../ChefComponents/ChefProfile';
 import Settings from '../ChefComponents/Settings';
-import '../../public/css/ChefCss/ChefHome.css'
+import '../../public/css/ChefCss/ChefHome.css';
 function ChefHome() {
     const [orders, setOrders] = useState([]);
     const ws = useRef(null);
@@ -40,6 +41,7 @@ function ChefHome() {
                     <Routes>
                         <Route path="/dashboard" element={<DashBoard />} />
                         <Route path="/orders" element={<Order />} />
+                        <Route path="/community" element={<Community />} />
                         <Route path="/profile" element={<ChefProfile />} />
                         <Route path="/settings" element={<Settings />} />
                         <Route

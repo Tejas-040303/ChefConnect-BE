@@ -43,7 +43,7 @@ function SignupComponent() {
       if (response.ok) {
         setSuccessMessage(data.message);
         setErrorMessage("");
-        if (data.role === "Customer" || data.role === "Chef") {
+        if (data.role === "Customer") {
           navigate("/login");
         }
       } else {

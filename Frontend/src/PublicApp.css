@@ -1,7 +1,7 @@
 
-body,html{
+/* body,html{
     background-color:#BB8845; 
-}
+} */
 
 /* Hero Section Styling */
 .hero-section {
@@ -9,8 +9,8 @@ body,html{
     align-items: center;
     justify-content: center;
     height: 100vh; /* Full-screen height */
-    background: linear-gradient(to bottom right, #fa709a, #fee140); /* Updated gradient */
-    color: white;
+    /* background: linear-gradient(to bottom right, #fa709a, #fee140); Updated gradient */
+    /* color: white; */
     padding: 2rem;
     text-align: center;
 }
@@ -44,8 +44,8 @@ body,html{
     padding: 0.8rem 1.5rem;
     font-size: 1rem;
     font-weight: bold;
-    color: white;
-    background-color: #ff6347;
+    /* color: white; */
+    /* background-color: #ff6347; */
     border: none;
     border-radius: 5px;
     cursor: pointer;
@@ -54,7 +54,7 @@ body,html{
 
 .cta-button:hover {
     transform: scale(1.1);
-    background-color: #e5533c;
+    /* background-color: #e5533c; */
 }
 
 /* Image Section */
@@ -69,7 +69,7 @@ body,html{
     width: 100%;
     max-width: 500px;
     border-radius: 15px;
-    box-shadow: 0px 10px 20px rgba(0, 0, 0, 0.25);
+    /* box-shadow: 0px 10px 20px rgba(0, 0, 0, 0.25); */
     animation: zoomIn 1.5s ease-in-out, bounce 2s infinite; /* Added bounce animation */
 }
 

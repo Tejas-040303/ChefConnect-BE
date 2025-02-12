@@ -132,12 +132,16 @@ function ChefProfileComponent() {
     setEditableFields(prev => ({ ...prev, schedule: newSchedule }));
   };
 
+
+
+
+
   const handleSubmit = async (e) => {
     e.preventDefault();
-    if (!hasChanges()) {
-      setIsEditing(true);
-      return;
-    }
+    // if (!hasChanges()) {
+    //   setIsEditing(true);
+    //   return;
+    // }
   
     try {
       const token = localStorage.getItem("token");
@@ -157,15 +161,15 @@ function ChefProfileComponent() {
       formData.append("specialties", JSON.stringify(editableFields.specialties || []));
       formData.append("dishes", JSON.stringify(editableFields.dishes || {}));
       formData.append("schedule", JSON.stringify(editableFields.schedule || []));
-  
+
       const response = await fetch("http://localhost:8080/profile/chefprofileupdate", {
-        method: "PUT",
+        method: "PATCH",
         headers: { "Authorization": `Bearer ${token}` },
         body: formData
       });
   
       const data = await response.json();
-      console.log(data);
+   
       if (!response.ok) {
         throw new Error(data.message || "Update failed");
       }
@@ -189,7 +193,7 @@ function ChefProfileComponent() {
 
   return (
     <div className="chef-profile-container">
-      <form onSubmit={handleSubmit}>
+      <form >
         {/* Basic Info Section */}
         <div className="section">
           <div className="section-header" onClick={() => toggleSection('basicInfo')}>
@@ -356,12 +360,15 @@ function ChefProfileComponent() {
         {/* Action Buttons */}
         <div className="actions">
           {!isEditing ? (
-            <button type="button" onClick={() => setIsEditing(true)}>
+            <button type="button" onClick={(e) =>{
+                e.preventDefault()
+              setIsEditing(true)
+            }}>
               Edit Profile
             </button>
           ) : (
             <>
-              <button type="submit">Save Changes</button>
+              <button type="submit" onClick={handleSubmit}>Save Changes</button>
               <button type="button" onClick={() => setIsEditing(false)}>
                 Cancel
               </button>

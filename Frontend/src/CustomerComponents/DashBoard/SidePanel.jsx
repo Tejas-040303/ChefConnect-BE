@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
-import Select from 'react-select'; // Install react-select via npm
-import '../../../public/css/CustomerCss/SidePanel.css'; // Add your styling here
+import Select from 'react-select';
+import '../../../public/css/CustomerCss/SidePanel.css';
 
 function SidePanel({ onFilterChange }) {
     const [filters, setFilters] = useState({
@@ -10,7 +10,6 @@ function SidePanel({ onFilterChange }) {
         specialties: [],
     });
 
-    // Changed/Removed
     const specialtiesOptions = [
         { value: 'Chinese', label: 'Chinese' },
         { value: 'Italian', label: 'Italian' },
@@ -21,18 +20,19 @@ function SidePanel({ onFilterChange }) {
     const handleFilterChange = (key, value) => {
         const updatedFilters = { ...filters, [key]: value };
         setFilters(updatedFilters);
-        if (onFilterChange) onFilterChange(updatedFilters); // Pass filters to parent
+        if (onFilterChange) onFilterChange(updatedFilters);
     };
 
     return (
         <div className="side-panel">
-            <h2>Filter Options</h2>
+            <h2 className="side-panel-title">Filter Options</h2>
 
             {/* Rating Filter */}
             <div className="filter-section">
-                <label htmlFor="rating">Rating:</label>
+                <label htmlFor="rating" className="filter-label">Rating:</label>
                 <select
                     id="rating"
+                    className="filter-dropdown"
                     value={filters.rating}
                     onChange={(e) => handleFilterChange('rating', e.target.value)}
                 >
@@ -47,9 +47,10 @@ function SidePanel({ onFilterChange }) {
 
             {/* Price Range Filter */}
             <div className="filter-section">
-                <label>Price Range:</label>
+                <label className="filter-label">Price Range:</label>
                 <input
                     type="range"
+                    className="filter-slider"
                     min="0"
                     max="1000"
                     value={filters.priceRange[1]}
@@ -57,17 +58,18 @@ function SidePanel({ onFilterChange }) {
                         handleFilterChange('priceRange', [0, Number(e.target.value)])
                     }
                 />
-                <p>
+                <p className="filter-price-range">
                     ${filters.priceRange[0]} - ${filters.priceRange[1]}
                 </p>
             </div>
 
             {/* Location Filter */}
             <div className="filter-section">
-                <label htmlFor="location">Location:</label>
+                <label htmlFor="location" className="filter-label">Location:</label>
                 <input
                     type="text"
                     id="location"
+                    className="filter-input"
                     placeholder="Enter location"
                     value={filters.location}
                     onChange={(e) => handleFilterChange('location', e.target.value)}
@@ -76,12 +78,13 @@ function SidePanel({ onFilterChange }) {
 
             {/* Specialties Filter */}
             <div className="filter-section">
-                <label htmlFor="specialties">Specialties:</label>
+                <label htmlFor="specialties" className="filter-label">Specialties:</label>
                 <Select
                     id="specialties"
-                    isMulti // Allows selecting multiple options
-                    options={specialtiesOptions} // Provide the options array
-                    value={filters.specialties} // Sync selected values with state
+                    isMulti
+                    className="filter-select"
+                    options={specialtiesOptions}
+                    value={specialtiesOptions.filter(option => filters.specialties.includes(option.value))}
                     onChange={(selectedOptions) => {
                         handleFilterChange(
                             'specialties',

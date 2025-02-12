@@ -1,7 +1,7 @@
-html, body{
+/* html, body{
     background: #2D3436 !important;
     background-color:  #2D3436 !important;
-}
+} */
 
 .signup, .login{
     border-radius: 0 !important;
@@ -20,13 +20,13 @@ html, body{
 }
 
 .footer-list-item a{
-    color: rgba(0, 0, 0, 0.671);
+    /* color: rgba(0, 0, 0, 0.671); */
     text-decoration: none;    
 }
 
-.footer-list-item a:hover{
+/* .footer-list-item a:hover{
     color: black;
-}
+} */
 
 .social-medias-icon {
     display: inline-flex;

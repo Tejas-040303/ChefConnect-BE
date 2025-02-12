@@ -1,0 +1,92 @@
+.chat-container {
+    display: flex;
+    height: 90vh;
+    width: 100%;
+    border: 1px solid #ccc;
+  }
+  
+  .left-side {
+    width: 20%;
+    background: #f4f4f4;
+    padding: 10px;
+  }
+  
+  .right-side {
+    width: 80%;
+    padding: 10px;
+    background: #fff;
+    display: flex;
+    flex-direction: column;
+  }
+  
+  .chat-options {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+  
+  .chat-options button {
+    padding: 10px;
+    border: none;
+    cursor: pointer;
+    font-size: 16px;
+  }
+  
+  .chat-options .active {
+    background: #007bff;
+    color: white;
+  }
+  
+  .friend-list h3 {
+    margin-top: 10px;
+  }
+  
+  .friend-list p {
+    background: #e3e3e3;
+    padding: 8px;
+    margin-top: 5px;
+    cursor: pointer;
+    transition: background 0.3s;
+  }
+  
+  .friend-list p:hover {
+    background: #d1d1d1;
+  }
+  
+  .selected-friend {
+    background: #007bff !important;
+    color: white;
+  }
+  
+  .message-area {
+    flex: 1;
+    overflow-y: auto;
+    padding: 10px;
+    border: 1px solid #ddd;
+    margin-bottom: 10px;
+    background: #fafafa;
+  }
+  
+  .message {
+    margin-bottom: 5px;
+  }
+  
+  .message-input {
+    display: flex;
+    gap: 10px;
+  }
+  
+  .message-input input {
+    flex: 1;
+    padding: 8px;
+    border: 1px solid #ddd;
+  }
+  
+  .message-input button {
+    padding: 8px 12px;
+    background: #007bff;
+    color: white;
+    border: none;
+    cursor: pointer;
+  }
+  
