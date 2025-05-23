@@ -1,0 +1,54 @@
+{
+  "Chef":[
+  {
+    "name": "Gordon Ramsay",
+    "email": "gordon.ramsay@example.com",
+    "password": "securepass123",
+    "role": "Chef",
+    "location": "London, UK",
+    "isVerified": true,
+    "status": "active",
+    "lastLogin": "2025-04-14T09:30:00Z"
+  },
+  {
+    "name": "Massimo Bottura",
+    "email": "massimo.bottura@example.com",
+    "password": "osteria456",
+    "role": "Chef",
+    "location": "Modena, Italy",
+    "isVerified": true,
+    "status": "active",
+    "lastLogin": "2025-04-13T17:15:00Z"
+  },
+  {
+    "name": "Dominique Crenn",
+    "email": "dominique.crenn@example.com",
+    "password": "atelier789",
+    "role": "Chef",
+    "location": "San Francisco, USA",
+    "isVerified": false,
+    "status": "active",
+    "lastLogin": "2025-04-12T12:45:00Z"
+  },
+  {
+    "name": "Vikas Khanna",
+    "email": "vikas.khanna@example.com",
+    "password": "flavors321",
+    "role": "Chef",
+    "location": "New York, USA",
+    "isVerified": true,
+    "status": "active",
+    "lastLogin": "2025-04-11T10:00:00Z"
+  },
+  {
+    "name": "Pooja Dhingra",
+    "email": "pooja.dhingra@example.com",
+    "password": "macaron555",
+    "role": "Chef",
+    "location": "Mumbai, India",
+    "isVerified": false,
+    "status": "active",
+    "lastLogin": "2025-04-10T14:20:00Z"
+  }
+]
+}

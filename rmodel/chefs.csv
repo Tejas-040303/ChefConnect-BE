@@ -1,0 +1,13 @@
+chef_id,name,email,phone,location,specialties,experience,averageRating,reviewCount
+CHEF001,Hannah Williams,michael15@collins.com,9009691800,Port Jasonshire,['French'],3,3.9,281
+CHEF002,Jamie Lang,anne88@gmail.com,3685468883,Rubenburgh,"['Italian', 'Chinese', 'Thai']",3,3.6,205
+CHEF003,Tiffany Long,joshuawhite@rose.biz,3021721154,Michelleland,"['Mexican', 'Japanese', 'Mediterranean']",2,3.3,298
+CHEF004,Michael Carter,sullivanstacy@harrington.com,0073195019,Madisonbury,['Indian'],2,4.1,172
+CHEF005,Christopher Johnson,kennethsherman@hanson-berger.com,4195810204,Warefurt,['Mexican'],4,3.8,105
+CHEF006,Breanna Turner,crossmichael@carrillo.net,6622200739,East Christopher,['Chinese'],4,5,108
+CHEF007,Alexander Lopez,zdavis@gmail.com,9651684458,Rachelport,"['French', 'Italian']",0,4.9,432
+CHEF008,Alison Boyd,michael94@jackson.com,0581788315,Stewarthaven,"['Chinese', 'Italian']",2,3.2,306
+CHEF009,Thomas Snyder,frank80@yahoo.com,6987409364,East David,"['Mexican', 'French']",0,3.8,36
+CHEF010,Megan Johnson,zanderson@gmail.com,7215148429,New Sandra,"['Spanish', 'Chinese']",4,3,487
+CHEF011,Fred Lara,wpark@yahoo.com,0730699074,West Cynthiachester,"['Chinese', 'Japanese']",3,4.2,193
+CHEF012,Melissa Walsh,atkinsandrew@fry.org,1529772956,North Scott,['Mediterranean'],1,4.9,398

@@ -1,0 +1,760 @@
+import pandas as pd
+import numpy as np
+import matplotlib.pyplot as plt
+import seaborn as sns
+import json
+import ast
+from sklearn.metrics.pairwise import cosine_similarity
+from sklearn.model_selection import train_test_split
+from sklearn.preprocessing import LabelEncoder, StandardScaler
+from sklearn.feature_extraction.text import CountVectorizer, TfidfVectorizer
+from sklearn.metrics import precision_score, recall_score, accuracy_score, f1_score
+import torch
+import torch.nn as nn
+import torch.optim as optim
+from torch.utils.data import Dataset, DataLoader
+import networkx as nx
+from surprise import Dataset as SurpriseDataset
+from surprise import Reader, SVD, KNNBasic, accuracy
+from surprise.model_selection import train_test_split as surprise_train_test_split
+from collections import defaultdict
+import re
+import random
+import time
+from tqdm import tqdm
+
+np.random.seed(42)
+torch.manual_seed(42)
+random.seed(42)
+
+# --------------------- Data Loading and Preprocessing ---------------------
+
+def load_data():
+    """Load and preprocess all required datasets."""
+    customers = pd.read_csv('customers.csv')
+    orders = pd.read_csv('orders.csv')
+    dishes = pd.read_csv('dishes.csv')
+    chefs = pd.read_csv('chefs.csv')
+    
+    # Convert string representations of lists to actual lists
+    customers['specialties preference'] = customers['specialties preference'].apply(
+        lambda x: ast.literal_eval(x) if isinstance(x, str) else x
+    )
+    chefs['specialties'] = chefs['specialties'].apply(
+        lambda x: ast.literal_eval(x) if isinstance(x, str) else x
+    )
+    
+    # Parse dish information in orders
+    orders['dishes'] = orders['dishes'].apply(
+        lambda x: json.loads(x.replace("'", "\"")) if isinstance(x, str) else x
+    )
+    
+    return customers, orders, dishes, chefs
+
+def preprocess_for_deep_learning(customers, orders, dishes, chefs):
+    """Prepare data for deep learning models."""
+    # Create user-item interaction data
+    interactions = []
+    
+    for _, order in orders.iterrows():
+        customer_id = order['customer_id']
+        chef_id = order['chef_id']
+        timestamp = pd.to_datetime(order['date']).timestamp()
+        
+        # Add customer-chef interaction
+        interactions.append({
+            'customer_id': customer_id,
+            'chef_id': chef_id,
+            'timestamp': timestamp,
+            'rating': 1,  # Implicit rating (ordered = positive interaction)
+        })
+    
+    interactions_df = pd.DataFrame(interactions)
+    
+    # Create encoders for categorical features
+    customer_encoder = LabelEncoder()
+    chef_encoder = LabelEncoder()
+    
+    # Fit encoders
+    all_customers = customers['customer_id'].tolist()
+    all_chefs = chefs['chef_id'].tolist()
+    
+    customer_encoder.fit(all_customers)
+    chef_encoder.fit(all_chefs)
+    
+    # Transform IDs to integer indices
+    interactions_df['customer_idx'] = customer_encoder.transform(interactions_df['customer_id'])
+    interactions_df['chef_idx'] = chef_encoder.transform(interactions_df['chef_id'])
+    
+    # Create mapping dictionaries for later use
+    customer_to_idx = dict(zip(all_customers, customer_encoder.transform(all_customers)))
+    chef_to_idx = dict(zip(all_chefs, chef_encoder.transform(all_chefs)))
+    idx_to_customer = dict(zip(customer_encoder.transform(all_customers), all_customers))
+    idx_to_chef = dict(zip(chef_encoder.transform(all_chefs), all_chefs))
+    
+    # Get number of unique entities
+    n_customers = len(customer_to_idx)
+    n_chefs = len(chef_to_idx)
+    
+    # Sort by timestamp for chronological splitting
+    interactions_df = interactions_df.sort_values('timestamp')
+    
+    encoders = {
+        'customer_encoder': customer_encoder,
+        'chef_encoder': chef_encoder,
+        'customer_to_idx': customer_to_idx,
+        'chef_to_idx': chef_to_idx,
+        'idx_to_customer': idx_to_customer,
+        'idx_to_chef': idx_to_chef,
+        'n_customers': n_customers,
+        'n_chefs': n_chefs
+    }
+    
+    return interactions_df, encoders
+
+def create_surprise_dataset(orders):
+    """Create a dataset for SVD using Surprise library."""
+    # Extract customer-chef interactions
+    interactions = []
+    for _, order in orders.iterrows():
+        customer_id = order['customer_id']
+        chef_id = order['chef_id']
+        # Using implicit feedback (1 for interaction)
+        interactions.append([customer_id, chef_id, 1])
+    
+    # Convert to DataFrame
+    df = pd.DataFrame(interactions, columns=['customer_id', 'chef_id', 'rating'])
+    
+    # Create Surprise dataset
+    reader = Reader(rating_scale=(0, 1))
+    return SurpriseDataset.load_from_df(df[['customer_id', 'chef_id', 'rating']], reader)
+
+def create_chef_embeddings(chefs, dishes):
+    """Create text-based embeddings for chefs based on their specialties and dish descriptions."""
+    # Combine chef specialties
+    chef_text = {}
+    for _, chef in chefs.iterrows():
+        chef_id = chef['chef_id']
+        specialties = ' '.join(chef['specialties'])
+        chef_text[chef_id] = specialties
+    
+    # Add dish descriptions for each chef
+    for _, dish in dishes.iterrows():
+        chef_id = dish['chef_id']
+        if chef_id in chef_text:
+            description = dish['description'] if isinstance(dish['description'], str) else ''
+            category = dish['category'] if isinstance(dish['category'], str) else ''
+            subcategory = dish['subCategory'] if isinstance(dish['subCategory'], str) else ''
+            chef_text[chef_id] += f" {description} {category} {subcategory}"
+    
+    # Create TF-IDF vectors
+    tfidf = TfidfVectorizer(max_features=100, stop_words='english')
+    
+    # Convert dictionary to DataFrame for vectorization
+    chef_text_df = pd.DataFrame(list(chef_text.items()), columns=['chef_id', 'text'])
+    chef_vectors = tfidf.fit_transform(chef_text_df['text'].fillna(''))
+    
+    # Create embedding dictionary
+    chef_embeddings = {}
+    for i, chef_id in enumerate(chef_text_df['chef_id']):
+        chef_embeddings[chef_id] = chef_vectors[i].toarray().flatten()
+    
+    return chef_embeddings, tfidf
+
+def create_customer_embeddings(customers, orders, dishes, chef_embeddings):
+    """Create embeddings for customers based on their preferences and order history."""
+    customer_embeddings = {}
+    
+    for _, customer in customers.iterrows():
+        customer_id = customer['customer_id']
+        
+        # Start with preference-based features
+        cuisine_prefs = customer['specialties preference']
+        diet_pref = customer['preference']
+        
+        # Use orders to build profile if available
+        customer_orders = orders[orders['customer_id'] == customer_id]
+        
+        if len(customer_orders) > 0:
+            # Average chef embeddings from orders
+            chef_embedding_sum = np.zeros(next(iter(chef_embeddings.values())).shape)
+            chef_count = 0
+            
+            for _, order in customer_orders.iterrows():
+                chef_id = order['chef_id']
+                if chef_id in chef_embeddings:
+                    chef_embedding_sum += chef_embeddings[chef_id]
+                    chef_count += 1
+            
+            if chef_count > 0:
+                customer_embeddings[customer_id] = chef_embedding_sum / chef_count
+            else:
+                # Fallback to zero vector if no chef embeddings available
+                customer_embeddings[customer_id] = np.zeros(next(iter(chef_embeddings.values())).shape)
+        else:
+            # For new users, create a zero vector
+            customer_embeddings[customer_id] = np.zeros(next(iter(chef_embeddings.values())).shape)
+    
+    return customer_embeddings
+
+def create_graph_embeddings(orders, customers, chefs, dishes):
+    """Create graph embeddings using NetworkX for a knowledge graph approach."""
+    # Create a heterogeneous graph
+    G = nx.Graph()
+    
+    # Add nodes
+    for _, customer in customers.iterrows():
+        G.add_node(customer['customer_id'], type='customer', 
+                   diet=customer['preference'],
+                   cuisines=','.join(customer['specialties preference']))
+    
+    for _, chef in chefs.iterrows():
+        G.add_node(chef['chef_id'], type='chef', 
+                  cuisines=','.join(chef['specialties']),
+                  rating=chef['averageRating'],
+                  experience=chef['experience'])
+    
+    for _, dish in dishes.iterrows():
+        G.add_node(dish['dish_id'], type='dish',
+                  category=dish['category'],
+                  subcategory=dish['subCategory'])
+    
+    # Add edges
+    for _, order in orders.iterrows():
+        customer_id = order['customer_id']
+        chef_id = order['chef_id']
+        
+        # Customer ordered from chef
+        G.add_edge(customer_id, chef_id, type='ordered_from')
+        
+        # Customer ordered dishes
+        for dish_item in order['dishes']:
+            dish_id = dish_item['dish']
+            G.add_edge(customer_id, dish_id, type='ordered')
+            G.add_edge(chef_id, dish_id, type='created')
+    
+    # Add edges between chefs with similar specialties
+    for i, chef1 in chefs.iterrows():
+        for j, chef2 in chefs.iterrows():
+            if i < j:  # Avoid duplicates
+                specialties1 = set(chef1['specialties'])
+                specialties2 = set(chef2['specialties'])
+                common = len(specialties1.intersection(specialties2))
+                if common > 0:
+                    similarity = common / len(specialties1.union(specialties2))
+                    if similarity > 0.3:  # Only connect if similarity is significant
+                        G.add_edge(chef1['chef_id'], chef2['chef_id'], 
+                                  type='similar_specialties', weight=similarity)
+    
+    # Use node2vec or similar for embedding (simulating with personalized PageRank for simplicity)
+    embeddings = {}
+    
+    # For each node, compute personalized PageRank and use as embedding
+    for node in G.nodes():
+        if G.degree(node) > 0:  # Skip isolated nodes
+            personalization = {n: 0.0 for n in G.nodes()}
+            personalization[node] = 1.0
+            
+            pr = nx.pagerank(G, alpha=0.85, personalization=personalization)
+            
+            # Convert to vector (sorted by node ID for consistency)
+            embedding = np.array([pr[n] for n in sorted(G.nodes())])
+            embeddings[node] = embedding
+        else:
+            # Fallback for isolated nodes
+            embeddings[node] = np.zeros(len(G.nodes()))
+    
+    return embeddings, G
+
+# --------------------- Existing Recommendation Models ---------------------
+
+def content_based_recommendations(customer_id, customers, chefs, top_n=3):
+    """
+    Recommend chefs based on matching customer preferences with chef specialties.
+    Used for new customers without order history.
+    """
+    customer = customers[customers['customer_id'] == customer_id].iloc[0]
+    
+    # Get customer's diet preference and cuisine specialties
+    diet_pref = customer['preference']
+    cuisine_prefs = customer['specialties preference']
+    
+    # Create a feature vector for each chef
+    chef_features = []
+    for _, chef in chefs.iterrows():
+        # Calculate cuisine match score (how many customer preferences match chef specialties)
+        cuisine_match = sum(cuisine in chef['specialties'] for cuisine in cuisine_prefs) if len(cuisine_prefs) > 0 else 0
+        cuisine_match_ratio = cuisine_match / len(cuisine_prefs) if len(cuisine_prefs) > 0 else 0
+        
+        # Consider chef rating and experience
+        chef_score = (chef['averageRating'] / 5) * 0.5 + (chef['experience'] / 10) * 0.2 + cuisine_match_ratio * 0.3
+        
+        chef_features.append({
+            'chef_id': chef['chef_id'],
+            'name': chef['name'],
+            'score': chef_score,
+            'cuisine_match': cuisine_match_ratio,
+            'rating': chef['averageRating']
+        })
+    
+    # Sort chefs by score
+    chef_features.sort(key=lambda x: x['score'], reverse=True)
+    
+    return chef_features[:top_n]
+
+def create_user_item_matrix(orders, customers, chefs):
+    """
+    Create a matrix where rows are customers and columns are chefs.
+    Each cell contains the number of times a customer ordered from a chef.
+    """
+    # Count orders for each customer-chef pair
+    customer_chef_counts = orders.groupby(['customer_id', 'chef_id']).size().reset_index(name='order_count')
+    
+    # Create pivot table
+    user_item_matrix = customer_chef_counts.pivot(
+        index='customer_id', 
+        columns='chef_id', 
+        values='order_count'
+    ).fillna(0)
+    
+    return user_item_matrix
+
+def collaborative_filtering(customer_id, user_item_matrix, customers, chefs, top_n=3):
+    """
+    Recommend chefs based on customer's previous orders and similarity to other customers.
+    Used for existing customers with order history.
+    """
+    # Check if customer exists in matrix
+    if customer_id not in user_item_matrix.index:
+        return []
+    
+    # Calculate cosine similarity between users
+    user_similarity = cosine_similarity(user_item_matrix)
+    user_similarity_df = pd.DataFrame(
+        user_similarity,
+        index=user_item_matrix.index,
+        columns=user_item_matrix.index
+    )
+    
+    # Get similar users to our target customer
+    similar_users = user_similarity_df[customer_id].sort_values(ascending=False)[1:6]  # Top 5 similar users
+    
+    # Which chefs has the customer already ordered from?
+    customer_chefs = user_item_matrix.loc[customer_id]
+    customer_chefs = set(customer_chefs[customer_chefs > 0].index)
+    
+    # Collect recommendations from similar users
+    chef_scores = {}
+    for similar_user, similarity in similar_users.items():
+        if similarity <= 0:  # Skip negatively correlated users
+            continue
+            
+        # Get chefs this similar user has ordered from
+        user_chefs = user_item_matrix.loc[similar_user]
+        user_chefs = set(user_chefs[user_chefs > 0].index)
+        
+        # Recommend chefs this similar user has ordered from but our target customer hasn't
+        for chef_id in user_chefs - customer_chefs:
+            if chef_id not in chef_scores:
+                chef_scores[chef_id] = 0
+            chef_scores[chef_id] += similarity * user_item_matrix.loc[similar_user, chef_id]
+    
+    # Sort chefs by score and get top_n
+    recommended_chefs = sorted(chef_scores.items(), key=lambda x: x[1], reverse=True)[:top_n]
+    
+    # Get chef details
+    chef_details = []
+    for chef_id, score in recommended_chefs:
+        chef = chefs[chefs['chef_id'] == chef_id].iloc[0]
+        chef_details.append({
+            'chef_id': chef_id,
+            'name': chef['name'],
+            'score': score,
+            'rating': chef['averageRating'],
+            'specialties': chef['specialties']
+        })
+    
+    return chef_details
+
+# --------------------- Matrix Factorization with Surprise ---------------------
+
+def train_svd_model(surprise_data):
+    """Train an SVD model using the Surprise library."""
+    # Split data into train and test sets
+    trainset, testset = surprise_train_test_split(surprise_data, test_size=0.25)
+    
+    # Train SVD model
+    algo = SVD(n_factors=50, n_epochs=20, lr_all=0.005, reg_all=0.02)
+    algo.fit(trainset)
+    
+    # Evaluate on test set
+    test_predictions = algo.test(testset)
+    rmse = accuracy.rmse(test_predictions)
+    mae = accuracy.mae(test_predictions)
+    
+    print(f"SVD Model - RMSE: {rmse:.4f}, MAE: {mae:.4f}")
+    
+    return algo
+
+def svd_recommendations(customer_id, svd_model, chefs, top_n=3, excluded_chef_ids=None):
+    """Generate recommendations using trained SVD model."""
+    if excluded_chef_ids is None:
+        excluded_chef_ids = set()
+    
+    # Get predictions for all chefs the customer hasn't interacted with
+    chef_predictions = []
+    
+    for _, chef in chefs.iterrows():
+        chef_id = chef['chef_id']
+        
+        if chef_id in excluded_chef_ids:
+            continue
+        
+        # Get prediction
+        prediction = svd_model.predict(customer_id, chef_id)
+        
+        chef_predictions.append({
+            'chef_id': chef_id,
+            'name': chef['name'],
+            'score': prediction.est,
+            'rating': chef['averageRating'],
+            'specialties': chef['specialties']
+        })
+    
+    # Sort by predicted rating
+    chef_predictions.sort(key=lambda x: x['score'], reverse=True)
+    
+    return chef_predictions[:top_n]
+
+# --------------------- Deep Learning Models ---------------------
+
+class NCFDataset(Dataset):
+    """Dataset for Neural Collaborative Filtering."""
+    def __init__(self, interactions_df, n_chefs, negative_samples=4):
+        self.interactions_df = interactions_df
+        self.n_chefs = n_chefs
+        self.negative_samples = negative_samples
+        
+        # Create set of existing interactions for negative sampling
+        self.user_item_set = set(zip(
+            interactions_df['customer_idx'].tolist(),
+            interactions_df['chef_idx'].tolist()
+        ))
+        
+        # List of all chef indices
+        self.all_chefs = list(range(n_chefs))
+    
+    def __len__(self):
+        return len(self.interactions_df) * (1 + self.negative_samples)
+    
+    def __getitem__(self, idx):
+        # Determine if this is a positive or negative sample
+        pos_idx = idx // (1 + self.negative_samples)
+        is_positive = (idx % (1 + self.negative_samples) == 0)
+        
+        # Get positive sample
+        customer_idx = self.interactions_df.iloc[pos_idx]['customer_idx']
+        
+        if is_positive:
+            chef_idx = self.interactions_df.iloc[pos_idx]['chef_idx']
+            rating = 1.0
+        else:
+            # Generate negative sample
+            while True:
+                chef_idx = random.choice(self.all_chefs)
+                if (customer_idx, chef_idx) not in self.user_item_set:
+                    break
+            rating = 0.0
+        
+        return {
+            'customer_idx': torch.tensor(customer_idx, dtype=torch.long),
+            'chef_idx': torch.tensor(chef_idx, dtype=torch.long),
+            'rating': torch.tensor(rating, dtype=torch.float)
+        }
+
+class NeuralCollaborativeFiltering(nn.Module):
+    """Neural Collaborative Filtering model."""
+    def __init__(self, n_customers, n_chefs, embedding_dim=32, hidden_layers=[64, 32, 16]):
+        super(NeuralCollaborativeFiltering, self).__init__()
+        
+        # Embedding layers
+        self.customer_embedding = nn.Embedding(n_customers, embedding_dim)
+        self.chef_embedding = nn.Embedding(n_chefs, embedding_dim)
+        
+        # MLP layers
+        self.fc_layers = nn.ModuleList()
+        input_size = 2 * embedding_dim
+        
+        for i, layer_size in enumerate(hidden_layers):
+            self.fc_layers.append(nn.Linear(input_size, layer_size))
+            input_size = layer_size
+        
+        # Final prediction layer
+        self.output_layer = nn.Linear(hidden_layers[-1], 1)
+        
+        # Matrix factorization path for integration
+        self.mf_output = nn.Linear(embedding_dim, 1)
+        
+        # Activation functions
+        self.relu = nn.ReLU()
+        self.sigmoid = nn.Sigmoid()
+    
+    def forward(self, customer_idx, chef_idx):
+        # Get embeddings
+        customer_emb = self.customer_embedding(customer_idx)
+        chef_emb = self.chef_embedding(chef_idx)
+        
+        # MLP path
+        mlp_input = torch.cat([customer_emb, chef_emb], dim=1)
+        
+        for layer in self.fc_layers:
+            mlp_input = self.relu(layer(mlp_input))
+        
+        mlp_output = self.output_layer(mlp_input)
+        
+        # Matrix factorization path (element-wise product)
+        mf_vector = customer_emb * chef_emb
+        mf_output = self.mf_output(mf_vector)
+        
+        # Combine paths
+        prediction = self.sigmoid(mlp_output + mf_output)
+        
+        return prediction.squeeze()
+
+def train_ncf_model(interactions_df, n_customers, n_chefs, epochs=10, batch_size=256):
+    """Train a Neural Collaborative Filtering model."""
+    # Create dataset and dataloader
+    dataset = NCFDataset(interactions_df, n_chefs, negative_samples=4)
+    dataloader = DataLoader(dataset, batch_size=batch_size, shuffle=True)
+    
+    # Initialize model
+    model = NeuralCollaborativeFiltering(n_customers, n_chefs)
+    
+    # Loss function and optimizer
+    criterion = nn.BCELoss()
+    optimizer = optim.Adam(model.parameters(), lr=0.001)
+    
+    # Training loop
+    model.train()
+    for epoch in range(epochs):
+        total_loss = 0
+        for batch in tqdm(dataloader, desc=f"Epoch {epoch+1}/{epochs}"):
+            customer_idx = batch['customer_idx']
+            chef_idx = batch['chef_idx']
+            ratings = batch['rating']
+            
+            # Forward pass
+            predictions = model(customer_idx, chef_idx)
+            loss = criterion(predictions, ratings)
+            
+            # Backward pass and optimization
+            optimizer.zero_grad()
+            loss.backward()
+            optimizer.step()
+            
+            total_loss += loss.item()
+        
+        avg_loss = total_loss / len(dataloader)
+        print(f"Epoch {epoch+1}/{epochs}, Loss: {avg_loss:.4f}")
+    
+    return model
+
+def ncf_recommendations(customer_id, ncf_model, encoders, chefs, top_n=3, excluded_chef_ids=None):
+    """Generate recommendations using trained Neural Collaborative Filtering model."""
+    if excluded_chef_ids is None:
+        excluded_chef_ids = set()
+    
+    # Get customer index
+    customer_to_idx = encoders['customer_to_idx']
+    idx_to_chef = encoders['idx_to_chef']
+    
+    if customer_id not in customer_to_idx:
+        return []  # Customer not found
+    
+    customer_idx = customer_to_idx[customer_id]
+    
+    # Prepare for prediction
+    model = ncf_model
+    model.eval()
+    
+    customer_tensor = torch.tensor([customer_idx], dtype=torch.long)
+    all_chefs_tensor = torch.arange(encoders['n_chefs'], dtype=torch.long)
+    
+    # Predict ratings for all chefs
+    with torch.no_grad():
+        customer_tensor = customer_tensor.repeat(len(all_chefs_tensor))
+        predictions = model(customer_tensor, all_chefs_tensor)
+    
+    # Convert to list of (chef_idx, score)
+    chef_scores = [(idx.item(), score.item()) for idx, score in zip(all_chefs_tensor, predictions)]
+    
+    # Sort by predicted score
+    chef_scores.sort(key=lambda x: x[1], reverse=True)
+    
+    # Get chef details for top predictions
+    recommendations = []
+    for chef_idx, score in chef_scores:
+        chef_id = idx_to_chef[chef_idx]
+        
+        if chef_id in excluded_chef_ids:
+            continue
+        
+        chef = chefs[chefs['chef_id'] == chef_id]
+        if len(chef) > 0:
+            chef = chef.iloc[0]
+            recommendations.append({
+                'chef_id': chef_id,
+                'name': chef['name'],
+                'score': score,
+                'rating': chef['averageRating'],
+                'specialties': chef['specialties']
+            })
+            
+            if len(recommendations) >= top_n:
+                break
+    
+    return recommendations
+
+class WideAndDeepModel(nn.Module):
+    """Wide & Deep model for recommender systems."""
+    def __init__(self, n_customers, n_chefs, embedding_dim=32, hidden_layers=[64, 32]):
+        super(WideAndDeepModel, self).__init__()
+        
+        # Embedding layers for deep part
+        self.customer_embedding = nn.Embedding(n_customers, embedding_dim)
+        self.chef_embedding = nn.Embedding(n_chefs, embedding_dim)
+        
+        # Deep part (MLP)
+        self.deep_layers = nn.ModuleList()
+        input_size = 2 * embedding_dim
+        
+        for i, layer_size in enumerate(hidden_layers):
+            self.deep_layers.append(nn.Linear(input_size, layer_size))
+            input_size = layer_size
+        
+        # Wide part - direct connections for both customer and chef
+        self.wide_customer = nn.Embedding(n_customers, 1)
+        self.wide_chef = nn.Embedding(n_chefs, 1)
+        
+        # Final prediction layers
+        self.deep_output = nn.Linear(hidden_layers[-1], 1)
+        
+        # Activation functions
+        self.relu = nn.ReLU()
+        self.sigmoid = nn.Sigmoid()
+    
+    def forward(self, customer_idx, chef_idx):
+        # Deep path
+        customer_emb = self.customer_embedding(customer_idx)
+        chef_emb = self.chef_embedding(chef_idx)
+        
+        deep_input = torch.cat([customer_emb, chef_emb], dim=1)
+        
+        for layer in self.deep_layers:
+            deep_input = self.relu(layer(deep_input))
+        
+        deep_output = self.deep_output(deep_input)
+        
+        # Wide path
+        wide_customer = self.wide_customer(customer_idx)
+        wide_chef = self.wide_chef(chef_idx)
+        wide_output = wide_customer + wide_chef
+        
+        # Combine wide and deep paths
+        combined = deep_output + wide_output
+        prediction = self.sigmoid(combined)
+        
+        return prediction.squeeze()
+
+def train_wide_deep_model(interactions_df, n_customers, n_chefs, epochs=10, batch_size=256):
+    """Train a Wide & Deep model."""
+    # Create dataset and dataloader
+    dataset = NCFDataset(interactions_df, n_chefs, negative_samples=4)
+    dataloader = DataLoader(dataset, batch_size=batch_size, shuffle=True)
+    
+    # Initialize model
+    model = WideAndDeepModel(n_customers, n_chefs)
+    
+    # Loss function and optimizer
+    criterion = nn.BCELoss()
+    optimizer = optim.Adam(model.parameters(), lr=0.001)
+    
+    # Training loop
+    model.train()
+    for epoch in range(epochs):
+        total_loss = 0
+        for batch in tqdm(dataloader, desc=f"Epoch {epoch+1}/{epochs}"):
+            customer_idx = batch['customer_idx']
+            chef_idx = batch['chef_idx']
+            ratings = batch['rating']
+            
+            # Forward pass
+            predictions = model(customer_idx, chef_idx)
+            loss = criterion(predictions, ratings)
+            
+            # Backward pass and optimization
+            optimizer.zero_grad()
+            loss.backward()
+            optimizer.step()
+            
+            total_loss += loss.item()
+        
+        avg_loss = total_loss / len(dataloader)
+        print(f"Epoch {epoch+1}/{epochs}, Loss: {avg_loss:.4f}")
+    
+    return model
+
+def wide_deep_recommendations(customer_id, model, encoders, chefs, top_n=3, excluded_chef_ids=None):
+    """Generate recommendations using trained Wide & Deep model."""
+    if excluded_chef_ids is None:
+        excluded_chef_ids = set()
+    
+    # Get customer index
+    customer_to_idx = encoders['customer_to_idx']
+    idx_to_chef = encoders['idx_to_chef']
+    
+    if customer_id not in customer_to_idx:
+        return []  # Customer not found
+    
+    customer_idx = customer_to_idx[customer_id]
+    
+    # Prepare for prediction
+    model.eval()
+    
+    customer_tensor = torch.tensor([customer_idx], dtype=torch.long)
+    all_chefs_tensor = torch.arange(encoders['n_chefs'], dtype=torch.long)
+    
+    # Predict ratings for all chefs
+    with torch.no_grad():
+        customer_tensor = customer_tensor.repeat(len(all_chefs_tensor))
+        predictions = model(customer_tensor, all_chefs_tensor)
+    
+    # Convert to list of (chef_idx, score)
+    chef_scores = [(idx.item(), score.item()) for idx, score in zip(all_chefs_tensor, predictions)]
+    
+    # Sort by predicted score
+    chef_scores.sort(key=lambda x: x[1], reverse=True)
+    
+    # Get chef details for top predictions
+    recommendations = []
+    for chef_idx, score in chef_scores:
+        chef_id = idx_to_chef[chef_idx]
+        
+        if chef_id in excluded_chef_ids:
+            continue
+        
+        chef = chefs[chefs['chef_id'] == chef_id]
+        if len(chef) > 0:
+            chef = chef.iloc[0]
+            recommendations.append({
+                'chef_id': chef_id,
+                'name': chef['name'],
+                'score': score,
+                'rating': chef['averageRating'],
+                'specialties': chef['specialties']
+            })
+
+        if len(recommendations) >= top_n:
+            break
+
+    return recommendations
