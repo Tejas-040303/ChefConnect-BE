@@ -1,0 +1,21 @@
+customer_id,name,email,phone,preference,specialties preference,address,loyaltyPoints
+CUST007,Sophia Moore,sophia.moore@domainmail.com,9374628012,Vegan,"['Mediterranean', 'Thai']","1005 Nelson Hill Apt. 401, East Devinville, FL 32106",382
+CUST008,Lucas Clark,lucas.c89@freshmail.org,6124587093,Vegetarian,"['Italian', 'French']","78 Barker Path, South Leahbury, TX 75219",145
+CUST009,Evelyn Scott,evelyns@chefmail.biz,7418529630,Non-Vegetarian,"['Mexican', 'Japanese']","2975 Kingston Court, Port Bella, ME 04862",318
+CUST010,Mason Lewis,mason.lewis@delicieux.com,9301298456,None,['Chinese'],"4264 Linda Lakes Suite 300, West Parker, IL 60411",84
+CUST011,Abigail Hall,abigail.hall@clientbox.io,8053167291,Vegetarian,"['Indian', 'Mediterranean']","3301 Joyce Walk Apt. 11, Lake Vanessa, NM 87301",201
+CUST012,Henry Walker,henryw23@gmail.net,7039816720,Vegan,"['French', 'Japanese']","922 Green Hollow Apt. 65, New Graham, OK 73072",279
+CUST013,Emily Young,emily.young@aol.net,9867123048,Non-Vegetarian,"['Mexican', 'Indian']","1615 Bruce Ports, North Carter, AR 72204",498
+CUST014,Aiden King,aiden.king@themailhub.com,3147829650,None,"['Italian', 'Thai']","2843 Ryan Center Suite 109, Jacksonhaven, VT 05401",126
+CUST015,Charlotte Adams,charlotte.adams@webchef.com,8546201973,Vegan,['Mediterranean'],"57 Blake Grove, Lake Alanport, AZ 85032",351
+CUST016,Daniel Nelson,daniel.nelson@urbanplate.org,7298436152,Non-Vegetarian,"['Chinese', 'Japanese']","7733 Taylor Crossroad, South Hannah, MI 48009",168
+CUST017,Amelia Ramirez,amelia.ramirez@culinaryzone.com,9053678214,Vegetarian,"['Indian', 'Italian']","9097 Michelle Shore, South Kennethborough, TN 37027",412
+CUST018,Matthew Rivera,matt.riv@gmail.net,6812405937,None,"['Thai', 'French']","412 Wendy Place Apt. 502, Jamesmouth, MT 59901",94
+CUST019,Mila Perez,mila.perez@flavorhub.com,3289104765,Vegan,"['Japanese', 'Chinese']","39 Bryan Alley, East Justinfort, OH 44107",219
+CUST020,Elijah Reed,elijah.reed@foodnet.io,4297861543,Non-Vegetarian,"['Mexican', 'French']","1050 Donna Drive, South Denise, WY 82901",337
+CUST021,Grace Cox,grace.cox@chefwave.net,6193058741,Vegetarian,"['Indian', 'Mediterranean']","8339 Crystal Heights Apt. 74, Port Lauren, SC 29506",455
+CUST022,Alexander Brooks,alex.brooks@dinebox.co,2748013659,None,"['Thai', 'Italian']","4463 John Corners, East Vanessa, ND 58102",63
+CUST023,Chloe Wood,chloe.wood@eplate.com,9184726058,Vegan,['French'],"74 Moore Loop, South Ethanburgh, RI 02903",388
+CUST024,Jayden Rogers,jrogers@foodfocus.net,7832164950,Non-Vegetarian,"['Indian', 'Japanese']","9255 John Union Suite 238, Allisonmouth, AL 35210",276
+CUST025,Avery Bailey,avery.bailey@veggiehub.com,6052184379,Vegetarian,"['Italian', 'Mexican']","1030 Stephanie Club, Lake Amanda, CO 80903",442
+CUST026,Nathan Bell,nathan.bell@culinarymail.org,4795123860,None,"['Chinese', 'Mediterranean']","1106 Rachel Divide Apt. 324, North Henryville, OR 97401",117

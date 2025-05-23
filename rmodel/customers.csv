@@ -1,0 +1,7 @@
+customer_id,name,email,phone,preference,specialties preference,address,loyaltyPoints
+CUST001,Benjamin Brady,natalieferguson@mack.net,0679313579,Non-Vegetarian,"['French','Indian']","269 Roy Village Suite 807, Markshire, KY 35216",240
+CUST002,Tara Lopez,howardnicholas@hotmail.com,8835155985,Vegan,"['Italian', 'Chinese', 'Thai']","Unit 2786 Box 9161, DPO AA 74085",464
+CUST003,Kristin Tate,cynthiabaker@schmidt.com,0393254802,Non-Vegetarian,"['Mexican', 'Japanese', 'Mediterranean']","4721 Alison Common Suite 421, South Tammy, SD 18557",122
+CUST004,Jason Meadows,gsmith@wright.org,4823169439,Vegetarian,['Indian'],"076 Andrew Curve Apt. 834, Victoriaport, IN 36905",183
+CUST005,Anthony Robinson,martinezbelinda@mcdaniel-holloway.com,2503394984,Vegetarian,['Indian'],"252 Christopher Shore, North Christophermouth, DC 38944",495
+CUST006,Gary Pena,bradleywatkins@beck.org,7808812962,None,"['Chinese','Thai']","9090 Miller Junction, South Matthew, CA 40953",22

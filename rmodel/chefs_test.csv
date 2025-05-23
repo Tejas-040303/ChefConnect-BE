@@ -1,0 +1,6 @@
+chef_id,name,email,phone,location,specialties,experience,averageRating,reviewCount
+CHEF006,Olivia Bennett,olivia.bennett@culinarywave.com,9345201897,New Ashton,"['Japanese', 'Korean']",5,4.4,390
+CHEF007,Ethan Ramirez,ethan.ramirez@gourmetmail.net,8826147830,Eastonview,"['Italian', 'French']",4,4,268
+CHEF008,Ava Patel,ava.patel@cheflink.org,7293104958,North Duncantown,"['Indian', 'Mediterranean']",2,3.5,132
+CHEF009,Liam Murphy,liam.murphy@tastefusion.co,6102938472,Brookchester,"['Chinese', 'Vietnamese', 'Thai']",3,4.2,301
+CHEF010,Isabella Nguyen,isabella.nguyen@flavortrail.com,7912047385,West Roseton,"['Mexican', 'Spanish']",1,3.7,98

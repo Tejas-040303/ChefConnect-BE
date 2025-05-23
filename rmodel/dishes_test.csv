@@ -1,0 +1,46 @@
+dish_id,name,                    price,category,    subCategory,    chef_id
+DISH061,Fried Rice Special,211.55,Rice,        Fried Rice,CHEF006
+DISH062,Cake Special,134.2,Desserts,    Cake,CHEF007
+DISH063,Aloo Special,147.8,Veges,        Aloo,CHEF006
+DISH064,Naan Special,183.42,Rotis,        Naan,CHEF008
+DISH065,Tea Special,66.94,Beverages,    Tea,CHEF009
+DISH066,Smoothie Special,292.88,Beverages,    Smoothie,CHEF006
+DISH067,Pudding Special,397.2,Desserts,    Pudding,CHEF007
+DISH068,Kofta Special,158.96,Veges,        Kofta,CHEF008
+DISH069,Curd Rice Special,126.7,Rice,        Curd Rice,CHEF008
+DISH070,Hot Dog Special,218.35,FastFoods,    Hot Dog,CHEF006
+DISH071,Jeera Rice Special,231.65,Rice,        Jeera Rice,CHEF008
+DISH072,Nachos Special,188.94,FastFoods,    Nachos,CHEF009
+DISH073,Bhindi Special,351.22,Veges,        Bhindi,CHEF007
+DISH074,Ice Cream Special,287.73,Desserts,    Ice Cream,CHEF006
+DISH075,Coffee Special,415.11,Beverages,    Coffee,CHEF008
+DISH076,Tandoori Roti Special,173.29,Rotis,        Tandoori Roti,CHEF010
+DISH077,Juice Special,97.44,Beverages,    Juice,CHEF010
+DISH078,Paneer Special,412.8,Veges,        Paneer,CHEF007
+DISH079,Pastry Special,309.55,Desserts,    Pastry,CHEF006
+DISH080,Biryani Special,376.64,Rice,        Biryani,CHEF008
+DISH081,Kulcha Special,213.27,Rotis,        Kulcha,CHEF007
+DISH082,Cake Special,175.35,Desserts,    Cake,CHEF009
+DISH083,Fries Special,139.69,FastFoods,    Fries,CHEF010
+DISH084,Palak Special,199.42,Veges,        Palak,CHEF006
+DISH085,Coffee Special,267.74,Beverages,    Coffee,CHEF009
+DISH086,Vegetable Rice Special,156.73,Rice,        Vegetable Rice,CHEF010
+DISH087,Ice Cream Special,321.45,Desserts,    Ice Cream,CHEF010
+DISH088,Hot Dog Special,160.28,FastFoods,    Hot Dog,CHEF010
+DISH089,Tandoori Roti Special,144.22,Rotis,        Tandoori Roti,CHEF010
+DISH090,Juice Special,121.96,Beverages,    Juice,CHEF010
+DISH091,Jeera Rice Special,285.33,Rice,        Jeera Rice,CHEF010
+DISH092,Nachos Special,347.9,FastFoods,    Nachos,CHEF007
+DISH093,Paneer Special,337.28,Veges,        Paneer,CHEF010
+DISH094,Pudding Special,423.07,Desserts,    Pudding,CHEF009
+DISH095,Smoothie Special,149.32,Beverages,    Smoothie,CHEF010
+DISH096,Kofta Special,113.09,Veges,        Kofta,CHEF010
+DISH097,Rumali Roti Special,268.6,Rotis,        Rumali Roti,CHEF008
+DISH098,Palak Special,172.11,Veges,        Palak,CHEF007
+DISH099,Curd Rice Special,119.5,Rice,        Curd Rice,CHEF010
+DISH100,Tea Special,178.93,Beverages,    Tea,CHEF010
+DISH101,Biryani Special,490.44,Rice,        Biryani,CHEF009
+DISH102,Pastry Special,145.29,Desserts,    Pastry,CHEF007
+DISH103,Fries Special,102.36,FastFoods,    Fries,CHEF010
+DISH104,Naan Special,223.19,Rotis,        Naan,CHEF009
+DISH105,Cake Special,201.76,Desserts,    Cake,CHEF008

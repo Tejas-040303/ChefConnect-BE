@@ -1,0 +1,61 @@
+dish_id,name,price,category,subCategory,chef_id
+DISH001,Jeera Rice Special,170.36,Rice,Jeera Rice,CHEF001
+DISH002,Pastry Special,265.5,Desserts,Pastry,CHEF001
+DISH003,Kofta Special,170.4,Veges,Kofta,CHEF001
+DISH004,Vegetable Rice Special,93.56,Rice,Vegetable Rice,CHEF001
+DISH005,Jeera Rice Special,165.55,Rice,Jeera Rice,CHEF001
+DISH006,Lemon Rice Special,228.63,Rice,Lemon Rice,CHEF001
+DISH007,Tea Special,474.09,Beverages,Tea,CHEF001
+DISH008,Tea Special,69.56,Beverages,Tea,CHEF001
+DISH009,Ice Cream Special,327.06,Desserts,Ice Cream,CHEF002
+DISH010,Cake Special,160.9,Desserts,Cake,CHEF002
+DISH011,Juice Special,108.78,Beverages,Juice,CHEF002
+DISH012,Aloo Special,86.59,Veges,Aloo,CHEF002
+DISH013,Aloo Special,476.72,Veges,Aloo,CHEF003
+DISH014,Fries Special,110.67,FastFoods,Fries,CHEF003
+DISH015,Tea Special,351.82,Beverages,Tea,CHEF003
+DISH016,Jeera Rice Special,61.61,Rice,Jeera Rice,CHEF004
+DISH017,Fried Rice Special,60.89,Rice,Fried Rice,CHEF004
+DISH018,Rumali Roti Special,256.83,Rotis,Rumali Roti,CHEF004
+DISH019,Kofta Special,398.39,Veges,Kofta,CHEF004
+DISH020,Bhindi Special,463.35,Veges,Bhindi,CHEF004
+DISH021,Hot Dog Special,217.77,FastFoods,Hot Dog,CHEF004
+DISH022,Paneer Special,280.02,Veges,Paneer,CHEF005
+DISH023,Fried Rice Special,268.48,Rice,Fried Rice,CHEF005
+DISH024,Kulcha Special,236.47,Rotis,Kulcha,CHEF005
+DISH025,Kofta Special,133.07,Veges,Kofta,CHEF006
+DISH026,Coffee Special,392.44,Beverages,Coffee,CHEF006
+DISH027,Pudding Special,386.3,Desserts,Pudding,CHEF006
+DISH028,Juice Special,115.46,Beverages,Juice,CHEF006
+DISH029,Coffee Special,337.83,Beverages,Coffee,CHEF007
+DISH030,Kulcha Special,123.54,Rotis,Kulcha,CHEF007
+DISH031,Coffee Special,123.78,Beverages,Coffee,CHEF007
+DISH032,Smoothie Special,197.21,Beverages,Smoothie,CHEF007
+DISH033,Tea Special,104.96,Beverages,Tea,CHEF007
+DISH034,Juice Special,200.58,Beverages,Juice,CHEF007
+DISH035,Kulcha Special,128.05,Rotis,Kulcha,CHEF007
+DISH036,Curd Rice Special,370.35,Rice,Curd Rice,CHEF007
+DISH037,Juice Special,197.66,Beverages,Juice,CHEF008
+DISH038,Tandoori Roti Special,101.03,Rotis,Tandoori Roti,CHEF008
+DISH039,Coffee Special,485.73,Beverages,Coffee,CHEF008
+DISH040,Fries Special,486.44,FastFoods,Fries,CHEF008
+DISH041,Tandoori Roti Special,390.96,Rotis,Tandoori Roti,CHEF008
+DISH042,Bhindi Special,369.77,Veges,Bhindi,CHEF008
+DISH043,Burger Special,337.21,FastFoods,Burger,CHEF009
+DISH044,Aloo Special,466.08,Veges,Aloo,CHEF009
+DISH045,Palak Special,428.48,Veges,Palak,CHEF009
+DISH046,Biryani Special,436.18,Rice,Biryani,CHEF009
+DISH047,Pastry Special,119.14,Desserts,Pastry,CHEF009
+DISH048,Smoothie Special,93.58,Beverages,Smoothie,CHEF009
+DISH049,Ice Cream Special,357.45,Desserts,Ice Cream,CHEF009
+DISH050,Naan Special,413.38,Rotis,Naan,CHEF010
+DISH051,Pastry Special,425.77,Desserts,Pastry,CHEF010
+DISH052,Palak Special,395.15,Veges,Palak,CHEF010
+DISH053,Nachos Special,381.1,FastFoods,Nachos,CHEF010
+DISH054,Fries Special,127.76,FastFoods,Fries,CHEF011
+DISH055,Kofta Special,61.58,Veges,Kofta,CHEF011
+DISH056,Ice Cream Special,104.46,Desserts,Ice Cream,CHEF011
+DISH057,Lemon Rice Special,491.54,Rice,Lemon Rice,CHEF012
+DISH058,Hot Dog Special,278.17,FastFoods,Hot Dog,CHEF012
+DISH059,Lemon Rice Special,470.51,Rice,Lemon Rice,CHEF012
+DISH060,Rumali Roti Special,485.69,Rotis,Rumali Roti,CHEF012
