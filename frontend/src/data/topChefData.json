@@ -1,0 +1,10 @@
+{
+    "slides": [
+      { "src": "https://picsum.photos/seed/img2/600/400", "alt": "Chef A", "description": "Expert in Italian cuisine." },
+      { "src": "https://picsum.photos/seed/img1/600/400", "alt": "Chef B", "description": "Specialist in French desserts." },
+      { "src": "https://picsum.photos/seed/img3/600/400", "alt": "Chef C", "description": "Renowned for Japanese sushi." },
+      { "src": "https://picsum.photos/seed/img4/600/400", "alt": "Chef D", "description": "Master of Indian spices." },
+      { "src": "https://picsum.photos/seed/img5/600/400", "alt": "Chef E", "description": "Grill and BBQ champion." },
+      { "src": "https://picsum.photos/seed/img6/600/400", "alt": "Chef F", "description": "Loves baking artisanal bread." }
+    ]
+  }  
